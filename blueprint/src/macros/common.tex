@@ -4,15 +4,91 @@
 
 % The theorem-like environments defined below are those that appear by default
 % in the dependency graph. See the README of leanblueprint if you need help to
-% customize this. 
+% customize this.
 % The configuration below use the theorem counter for all those environments
 % (this is what the [theorem] arguments mean) and never resets it.
 % If you want for instance to number them within chapters then you can add
 % [chapter] at the end of the next line.
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
 
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
+\newtheorem{defi}{定義}[section]
+\newtheorem{thm}[defi]{定理}
+\newtheorem{prop}[defi]{命題}
+\newtheorem{lem}[defi]{補題}
+\newtheorem{cor}[defi]{系}
+\newtheorem{rem}[defi]{注意}
+\newtheorem{exa}[defi]{例}
+\newtheorem{exe}[defi]{演習}
+\newtheorem{fact}[defi]{事実}
+\newtheorem*{defi*}{定義}
+\newtheorem*{thm*}{定理}
+\newtheorem*{prop*}{命題}
+\newtheorem*{lem*}{補題}
+\newtheorem*{cor*}{系}
+\newtheorem*{rem*}{注意}
+\newtheorem*{exa*}{例}
+\newtheorem*{exe*}{演習}
+\newtheorem*{fact*}{事実}
+\newtheorem*{hosoku*}{補足}
+
+\newcommand{\st}{\ \text{s.t.}\ }
+\newcommand{\map}[2]{#1 \rightarrow #2}
+\newcommand{\set}[2]{\left\lbrace #1 \mathrel{} \middle| \mathrel{} #2 \right\rbrace}
+\newcommand{\ddv}[2]{\dfrac{d #1}{d #2}}
+\newcommand{\dpdv}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\dsum}{\displaystyle \sum}
+\newcommand{\dlim}{\displaystyle \lim}
+\newcommand{\dint}{\displaystyle \int}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\inner}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\transpose}[1]{{}^t\!#1}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\M}{\operatorname{M}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Ker}{\operatorname{Ker}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\ann}[1]{\operatorname{Ann}\, ({#1})}
+\newcommand{\Co}{\operatorname{Co}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+
+% figureのキャプションをsectionに関連づける
+\counterwithin{figure}{section}
+
+% 式番号をsectionと関連づける
+\numberwithin{equation}{section}
+
+% 数式番号を参照されたもののみ表示
+\mathtoolsset{showonlyrefs=true}
+
+% 証明環境の見出しを日本語に
+\def\proofname{\textbf{証明}}
+
+% 証明環境の再定義
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+\pushQED{\qed}%
+\normalfont \topsep6\p@\@plus6\p@\relax
+\trivlist
+\item\relax
+{\bfseries
+#1\@addpunct{\textbf{.}}}\hspace\labelsep\ignorespaces
+}{
+\popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
+% 証明環境の最後を黒四角に
+\renewcommand{\qedsymbol}{$\blacksquare$}

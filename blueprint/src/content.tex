@@ -5,3 +5,658 @@
 % If you want to split the blueprint content into several files then
 % the current file can be a simple sequence of \input. Otherwise It
 % can start with a \section or \chapter for instance.
+
+\section{reflection groupsとroot lattices}
+ここで登場する記号はMathlibとは関係ない独立したものであり，証明もMathlibのものとは異なる場合がある．
+
+以下，$V$を$\R^n$のsubspaceとし，$\alpha, \beta \in V$の内積を$\inner{\alpha}{\beta}$と書き，$\alpha$のノルムを$\norm{\alpha} = \sqrt{\inner{\alpha}{\alpha}}$と書く．
+\begin{defi}
+  \label{defi:orthogonal_transformation}
+  $f : \map{V}{V}$を線型写像とする．
+  このとき，$f$が\textbf{直交変換}であるとは，
+  \begin{equation}
+    \inner{f(\alpha)}{f(\beta)} = \inner{\alpha}{\beta}
+  \end{equation}
+  が成り立つことである．
+  また，$V$上の直交変換全体の集合を$O(V)$と書く．
+\end{defi}
+
+\begin{rem}
+  \label{rem:orthogonal_transformation_norm}
+  \lean{LinearIsometryEquiv}
+  \leanok
+  定義から$\norm{f(\alpha)} = \norm{\alpha}$がすぐわかる．
+\end{rem}
+
+\begin{rem}
+  \label{rem:orthogonal_transformation_one-to-one}
+  $f \in O(\R^n)$とする．
+  $O(n) := \set{A}{\transpose{A} A = I_n}$ (i.e., 直交行列全体)とすると，$A \in O(n)$を用いて$f(x) = Ax$と表せる．
+  よって，次の1対1対応がある：
+  \begin{equation}
+    \begin{array}{ccc}
+    O(n) & \xleftrightarrow[\text{one-to-one}]{\simeq}  & O(\R^n) \\
+    \rotatebox[origin=c]{90}{$\in$} & & \rotatebox[origin=c]{90}{$\in$} \\
+    A & \longleftrightarrow & f(x) = Ax
+    \end{array}
+  \end{equation}
+\end{rem}
+
+以下，$\bm{k}$を$\R$または$\C$とし(Leanでは$\mathtt{RCLike}$)，$E$を$\bm{k}$-内積空間，$K$を$E$の$\bm{k}$-部分加群とする．
+
+\begin{defi}
+  \label{defi:orthogonalProjection}
+  \lean{Submodule.orthogonalProjection}
+  \leanok
+  $\forall v \in E,\ \exists w \in K \st v - w \in K^\perp$とする．
+  線型連続写像$\operatorname{proj}_K : \map{E}{K}; \operatorname{proj}_K(v) = w$を\textbf{正射影(projection)}という．
+  すなわち，$x \in E$を$x = \operatorname{proj}_K(x) + (x - \operatorname{proj}_K(x)) \in K \oplus K^\perp$と書ける．
+\end{defi}
+
+\begin{thm}
+  \label{thm:orthogonalProjection_singleton}
+  \lean{Submodule.orthogonalProjection_singleton}
+  \leanok
+  任意の$v, w \in E$に対して次が成り立つ：
+  \begin{equation}
+    \operatorname{proj}_{\bm{k}v}(w) = \frac{\inner{v}{w}}{\norm{v}^2} v.
+  \end{equation}
+\end{thm}
+
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{defi}
+  \label{defi:reflection}
+  \lean{Submodule.reflection}
+  \leanok
+  次の直交変換を\textbf{reflection}という：
+  \begin{equation}
+    s_K : \map{E}{E};\ x \mapsto 2 \cdot \operatorname{proj}_K(x) - x.
+  \end{equation}
+\end{defi}
+
+\begin{thm}
+  \label{thm:reflection_singleton_apply}
+  \lean{Submodule.reflection_singleton_apply}
+  \leanok
+  任意の$u, v \in E$に対し，次が成り立つ：
+  \begin{equation}
+    s_{\bm{k}u}(v) = 2 \frac{\inner{u}{v}}{\norm{u}^2}u - v.
+  \end{equation}
+\end{thm}
+
+\begin{proof}
+  \leanok
+  \uses{thm:orthogonalProjection_singleton}
+  略．
+\end{proof}
+
+\begin{rem}
+  以前，$\alpha$に関するreflectionは
+  \begin{equation}
+    s_\alpha (\lambda) = \lambda - 2\frac{\inner{\alpha}{\lambda}}{\inner{\alpha}{\alpha}} \alpha.
+  \end{equation}
+  と表せることを見た．
+  定理~\ref{thm:reflection_singleton_apply}からわかるように，$s_{\bm{k}\alpha}$は$s_\alpha$と逆向き(すなわち，$s_\alpha = s_{H_\alpha} = s_{(\R \alpha)^\perp}$)である．
+\end{rem}
+
+\begin{thm}
+  \label{thm:reflection_eq_self_iff}
+  \lean{Submodule.reflection_eq_self_iff}
+  \leanok
+  任意の$x \in E$に対して次が成り立つ：
+  \begin{equation}
+    s_K(x) = x \iff x \in K.
+  \end{equation}
+\end{thm}
+
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{thm}
+  \label{thm:reflection_map_apply}
+  \lean{Submodule.reflection_map_apply}
+  \leanok
+  $E'$を$\bm{k}$-内積空間，$f : \map{E}{E'}$を線形同型な等長写像(すなわち，$\norm{f(x)} = \norm{x}$)とする．
+  このとき，任意の$x \in E'$に対して次が成り立つ：
+  \begin{equation}
+    s_{f(K)}(x) = f(s_K(f^{-1}(x))).
+  \end{equation}
+\end{thm}
+
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{thm}
+  \label{thm:reflection_mem_subspace_orthogonalComplement_eq_neg}
+  \lean{Submodule.reflection_mem_subspace_orthogonalComplement_eq_neg}
+  \leanok
+  任意の$v \in E$に対し，$v \in K^\perp$なら$s_K(v) = -v$である．
+\end{thm}
+
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{defi}
+  $O(V)$の部分群$W$が次を満たすとき，$W$を\textbf{finite reflection group}という：
+  \begin{enumerate}[label=(\roman*)]
+    \item $W$はfinite group,
+    \item $W$はreflectionsで生成される，すなわち
+    \begin{equation}
+      \forall w \in W,\ \exists s_{\alpha_1}, \ldots, s_{\alpha_r} \in W \textrm{: reflections} \st w = s_{\alpha_1} \cdots s_{\alpha_r}.
+    \end{equation}
+  \end{enumerate}
+\end{defi}
+
+\begin{rem}
+  $s_\alpha^2 = 1.$
+\end{rem}
+
+\begin{defi}
+  finite reflection group $W$が次を満たすとき，$W$は\textbf{essential}であるという：
+  \begin{equation}
+    \Fix(W) := \set{\lambda \in V}{\forall w \in W,\ w(\lambda) = \lambda} = \{0\}.
+  \end{equation}
+\end{defi}
+
+\begin{rem}
+  $W$がessentialでないとき，$V = \Fix(W) \oplus \Fix(W)^\perp$である．
+  また，部分空間$\Fix(W)^\perp$上では$W$はessentialである．
+\end{rem}
+
+\begin{defi}
+  空でない$V$の有限部分集合$\Phi$が次を満たすとき，$\Phi$を\textbf{root system}という：
+  \begin{enumerate}[label=(\roman*)]
+    \item $\Phi$は$V$を生成する, \label{defi:root_gen}
+    \item $\forall \alpha \in \Phi,\ \R \alpha \cap \Phi = \{\pm \alpha\}$, \label{defi:root_self}
+    \item $\forall \alpha, \beta \in \Phi,\ s_\beta(\alpha) \in \Phi$. \label{defi:root_ref_closed}
+  \end{enumerate}
+  また，$\Phi$の元を\textbf{root vector}，または単に\textbf{root}という．
+\end{defi}
+
+\begin{defi}
+  root system $\Phi$が次を満たすとき，\textbf{crystallographic}であるという：
+  \begin{enumerate}[label=(\roman*)]
+    \setcounter{enumi}{3}
+    \item $\forall \alpha, \beta \in \Phi,\ 2 \dfrac{\inner{\alpha}{\beta}}{\inner{\alpha}{\alpha}} \in \Z$.
+  \end{enumerate}
+\end{defi}
+
+finite reflection groupが与えられると，それに対応するroot systemが存在する：
+
+\begin{prop} \label{prop:frg_to_root}
+  $W$をessential finite reflection groupとする．
+  このとき，$\Phi := \set{\alpha \in V}{\norm{\alpha} = 1,\ s_\alpha \in W}$はroot systemである．
+\end{prop}
+\begin{proof}
+  \ref{defi:root_gen}を示すために，$\Fix (W) = \bigcap_{\alpha \in \Phi} H_\alpha$を示す：
+
+  $(\subseteq)$任意に$\lambda \in \Fix(W),\ \alpha \in \Phi$をとると，$s_\alpha \in W$であるから$s_\alpha(\lambda) = \lambda$である．
+  よって，
+  \begin{equation}
+    \inner{\alpha}{\lambda}
+    = \inner{\alpha}{s_\alpha(\lambda)}
+    = \inner{s_\alpha^{-1}(\alpha)}{\lambda}
+    = \inner{s_\alpha(\alpha)}{\lambda}
+    = \inner{-\alpha}{\lambda}
+    = -\inner{\alpha}{\lambda}.
+    \qquad \therefore \inner{\alpha}{\lambda} = 0.
+  \end{equation}
+  したがって，$\lambda \in H_\alpha$である．
+
+  $(\supseteq)$ $\lambda \in \bigcap_{\alpha \in \Phi} H_\alpha$とする．
+  任意に$w \in W$をとり，$w = s_{\alpha_1} \cdots s_{\alpha_r}$とreflectionsの積で書く．
+  ただし，$\norm{\alpha_1} = \cdots = \norm{\alpha_r} = 1$としておく．
+  すると，$\alpha_1, \ldots, \alpha_r \in \Phi$であるから，$\lambda \in H_{\alpha_i}$である．
+  よって，
+  \begin{equation}
+    w(\lambda)
+    = (s_{\alpha_1} \cdots s_{\alpha_{r-1}} s_{\alpha_r})(\lambda)
+    = (s_{\alpha_1} \cdots s_{\alpha_{r-1}})(\lambda)
+    = \cdots
+    = \lambda.
+  \end{equation}
+
+  よって，$W$はessentialだから，
+  \begin{equation}
+    \{0\}
+    = \Fix(W)
+    = \bigcap_{\alpha \in \Phi} H_\alpha.
+  \end{equation}
+  したがって，
+  \begin{equation}
+    V
+    = \Fix(W)^\perp
+    = \left( \bigcap_{\alpha \in \Phi} H_\alpha \right)^\perp
+    = \sum_{\alpha \in \Phi} H_\alpha^\perp
+    = \sum_{\alpha \in \Phi} \R\alpha
+  \end{equation}
+  であるから$\Phi$は$V$を生成する．
+
+  \ref{defi:root_self}は$\norm{\alpha} = 1$からわかる．
+
+  \ref{defi:root_ref_closed}を示す．
+  $\forall \alpha, \beta \in \Phi$に対し，$\norm{s_\beta(\alpha)} = \norm{\alpha} = 1$である．
+  また，補題~\ref{lem:orth_ref_orthinv}より，$s_{s_\beta(\alpha)} = s_\beta s_\alpha s_\beta^{-1} \in W$である．
+  よって，$s_\beta(\alpha) \in \Phi$が成り立つ．
+\end{proof}
+
+逆に，root systemが与えられると，それに対応するfinite reflection groupが存在する：
+\begin{prop}
+  $\Phi \subseteq V$をroot systemとする．
+  このとき，$\set{s_\alpha}{\alpha \in \Phi}$が生成する群$W_\Phi$はessential finite reflection groupである．
+\end{prop}
+\begin{proof}
+  命題~\ref{prop:frg_to_root}の証明中\ref{defi:root_gen}で，$\Phi = \{\alpha_1 \ldots, \alpha_r\}$とし，$W$を$W_\Phi$と読み替えれば$\Fix(W_\Phi) = \bigcap_{\alpha \in \Phi} H_\alpha$が成り立つ．
+  よって，$\Phi$は$V$を生成するから$\Fix(W_\Phi)^\perp = \sum_{\alpha \in \Phi} \R\alpha = V$である．
+  したがって，$W_\Phi$はessentialである．
+
+  あとは$W_\Phi$が有限であることを示せば良い．
+  \ref{defi:root_ref_closed}より，$\forall \alpha \in \Phi,\ s_\alpha(\Phi) = \Phi$であるから$\forall w \in W,\ w(\Phi) = \Phi$である．
+  すなわち，$w$は$\Phi$上の置換とみなせる．
+  よって，
+  \begin{equation}
+    \begin{array}{rccc}
+    p:&W_\Phi & \longrightarrow & \operatorname{Perm}(\Phi) \\
+    &\rotatebox[origin=c]{90}{$\in$} & & \rotatebox[origin=c]{90}{$\in$} \\
+    &w & \longmapsto & (\alpha \mapsto w(\alpha))
+    \end{array}
+  \end{equation}
+  と定めると，これはgroup homである($\operatorname{Perm}(\Phi)$は$\Phi$の置換群)．
+  これが単射であることを示せば，$\abs{W_\Phi} \le \abs{\operatorname{Perm}(\Phi)} < \infty$が示せる．
+  \begin{align}
+    w \in \Ker p
+    &\iff \forall \alpha \in \Phi,\ w(\alpha) = \alpha\\
+    &\iff w = 1
+  \end{align}
+  であるから，$\Ker p = \{1\}$であり，単射であることが示せた．
+\end{proof}
+
+root systemはfinite reflection groupの生成系を与えているが，群の生成元の個数はできるだけ少なくしたい．
+そこで，root systemを``うまく''取る方法を考える．
+
+\begin{defi}
+  $\Phi \subseteq V$をroot systemとし，$p \in V \setminus \{0\}$は$\forall \alpha \in \Phi,\ \inner{\alpha}{p} \ne 0$を満たすとする．
+  このとき，$\Pi := \set{\alpha \in \Phi}{\inner{\alpha}{p} > 0}$を\textbf{positive root system}という．
+\end{defi}
+
+\begin{rem}
+  $\Pi$は$p$の取り方による．
+\end{rem}
+
+\begin{defi}
+  $\Pi$をpositive root systemとする．
+  $\Delta \subseteq \Pi$が次を満たすとき，$\Delta$を\textbf{simple root system}という：
+  \begin{enumerate}[label=(\roman*)]
+    \item $\Delta$は$V$の基底,
+    \item $\forall \alpha \in \Pi,\ \exists c_\beta \ge 0 \st \alpha = \sum_{\beta \in \Delta} c_\beta \beta$.
+  \end{enumerate}
+\end{defi}
+
+simple root systemは必ず存在し，しかも一意である：
+
+\begin{fact}
+  $\Phi$をroot system，$\Pi$をpositive root systemとする．
+  \begin{enumerate}[label=(\arabic*)]
+    \item $\exists! \Delta \subseteq \Phi$ : simple root system,
+    \item $W_\Phi$は$\set{s_\alpha}{\alpha \in \Delta}$で生成される．
+  \end{enumerate}
+\end{fact}
+
+以下，essential finite reflection group $W$に対し，そのroot systemを$\Phi$，そのsimple root systemを$\Delta$とする．
+また，$\alpha, \beta \in \Delta$に対し，$m(\alpha, \beta)$を$s_\alpha s_\beta$の位数，$c(\beta, \alpha) = 2\dfrac{\inner{\beta}{\alpha}}{\inner{\alpha}{\alpha}}$とする．
+
+\begin{rem}
+  $s_\alpha^2 = 1$より$m(\alpha, \alpha) = 1$である．
+  また，$s_\beta s_\alpha = (s_\alpha s_\beta)^{-1}$より$m(\alpha, \beta) = m(\beta, \alpha)$である．
+\end{rem}
+
+\begin{lem} \label{lem:inner_order}
+  $\alpha \ne \beta \in \Delta$とする．このとき，次が成り立つ：
+  \begin{equation}
+    \inner{\alpha}{\beta}
+    = -\norm{\alpha} \norm{\beta} \cos\frac{\pi}{m(\alpha, \beta)}.
+  \end{equation}
+\end{lem}
+
+\begin{prop}
+  $\alpha$と$\beta$は線型独立とする．$\Phi$がcrystallographicなとき，$m(\alpha, \beta) = 2, 3, 4, 6$である．
+\end{prop}
+\begin{proof}
+  補題~\ref{lem:inner_order}より，
+  \begin{equation}
+    c(\beta, \alpha)
+    = 2\frac{\inner{\beta}{\alpha}}{\inner{\alpha}{\alpha}}
+    = 2\frac{-\norm{\alpha} \norm{\beta} \cos\frac{\pi}{m(\alpha, \beta)}}{\norm{\alpha}^2}
+    = -2\frac{\norm{\beta}}{\norm{\alpha}} \cos\frac{\pi}{m(\alpha, \beta)}
+  \end{equation}
+  であるから，
+  \begin{equation}
+    c(\alpha, \beta) c(\beta, \alpha)
+    = \left( -2\frac{\norm{\alpha}}{\norm{\beta}} \cos\frac{\pi}{m(\beta, \alpha)} \right) \left( -2\frac{\norm{\beta}}{\norm{\alpha}} \cos\frac{\pi}{m(\alpha, \beta)} \right)
+    = 4\cos^2 \frac{\pi}{m(\alpha, \beta)}
+  \end{equation}
+  である．
+  $\Phi$はcrystallographic，すなわち$c(\alpha, \beta), c(\beta, \alpha) \in \Z$であるから，$c(\alpha, \beta) c(\beta, \alpha) = 0, 1, 2, 3, 4$である．
+
+  $c(\alpha, \beta) c(\beta, \alpha) = 4$のとき，$m(\alpha, \beta) = 1$となるが，これは$\alpha$と$\beta$の線型独立性に矛盾する．
+
+  $c(\alpha, \beta) c(\beta, \alpha) = 0, 1, 2, 3$のとき，それぞれ次のようになる：
+  \begin{table}[htbp]
+    \centering
+    \caption{$c(\alpha, \beta) c(\beta, \alpha)$と$m(\alpha, \beta)$の関係}
+    \label{fig:c_m_relation}
+    \begin{tabular}{cccc}
+      $c(\alpha, \beta) c(\beta, \alpha)$ & $\cos^2 \frac{\pi}{m(\alpha, \beta)}$ & $\cos\frac{\pi}{m(\alpha, \beta)}$ & $m(\alpha, \beta)$\\ \hline
+      $0$ & $0$ & $0$ & $2$ \\
+      $1$ & $1/4$ & $1/2$ & $3$\\
+      $2$ & $1/2$ & $1/\sqrt2$ & $4$\\
+      $3$ & $3/4$ & $\sqrt{3}/2$ & $6$
+    \end{tabular}
+  \end{table}
+\end{proof}
+
+\begin{defi}
+  $\Delta = \{\alpha_1, \ldots, \alpha_r\}$とする．
+  このとき，$r$次正方行列$C := (c(\alpha_i, \alpha_j))$を$\Phi$の\textbf{Cartan matrix}という．
+\end{defi}
+
+\begin{defi}
+  $\Delta = \{\alpha_1, \ldots, \alpha_r\}$とする．
+  このとき，$\Phi$の\textbf{Coxeter diagram}を次のように定義する：
+  \begin{enumerate}[label=(\roman*)]
+    \item $r$個の頂点を持つ，
+    \item 頂点$i$と頂点$j$は$m(\alpha_i, \alpha_j)$と書かれた辺で結ぶ，\label{defi:node_m}
+    \item 特に，$m(\alpha_i, \alpha_j) = 2, 3, 4, 6$のときは，\ref{defi:node_m}の代わりに表~\ref{fig:c_m_relation}で対応する$c(\alpha_i, \alpha_j) c(\alpha_j, \alpha_i)$本の辺で結ぶ．
+  \end{enumerate}
+\end{defi}
+
+\begin{defi}
+  Coxeter diagramに次の条件を追加したものを\textbf{Coxeter-Dynkin diagram}という：
+  \begin{enumerate}[label=(\roman*)]
+    \setcounter{enumi}{3}
+    \item $\abs{c(\alpha_i, \alpha_j)} < \abs{c(\alpha_j, \alpha_i)}$のとき，頂点$i$から頂点$j$に向きをつける．
+  \end{enumerate}
+\end{defi}
+
+\begin{defi}
+  root system $\Phi$で生成されるlattice，すなわち次の集合$\Lambda$を\textbf{root lattice}という：
+  \begin{equation}
+    \Lambda := \set{\sum_{i=1}^{r} s_i \alpha_i}{\alpha_i \in \Phi,\ s_i \in \Z}.
+  \end{equation}
+\end{defi}
+
+\section{$E_8$ lattice}
+
+\begin{defi}
+  \label{defi:E8Lattice}
+  \lean{E8Lattice}
+  \leanok
+  \uses{defi:IntegralLattice}
+  $E_8$格子とは，integralLatticeであって，even unimodularかつランクが$8$であるもののことである．
+\end{defi}
+
+\begin{thm}
+  \label{thm:unique}
+  \lean{E8Lattice.unique}
+  \leanok
+  2つの$E_8$格子$\Lambda_1,\ \Lambda_2$は同型である．
+\end{thm}
+
+\begin{proof}
+  sorry.
+\end{proof}
+
+\begin{defi}
+  \label{defi:M0-M7}
+  \lean{E8Lattice.M0}
+  \leanok
+  $E_8$のCartan行列を$M_0$，それを1行ずつ行基本変形していき(その過程の行列を$M_1, M_2, \ldots, M_6$とする)上三角にしたものを$M_7$とする：
+  \begin{gather}
+    M_0 :=
+    \begin{pmatrix}
+      2 & 0 & -1 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 2 & 0 & -1 & 0 & 0 & 0 & 0 \\
+      -1 & 0 & 2 & -1 & 0 & 0 & 0 & 0 \\
+      0 & -1 & -1 & 2 & -1 & 0 & 0 & 0 \\
+      0 & 0 & 0 & -1 & 2 & -1 & 0 & 0 \\
+      0 & 0 & 0 & 0 & -1 & 2 & -1 & 0 \\
+      0 & 0 & 0 & 0 & 0 & -1 & 2 & -1 \\
+      0 & 0 & 0 & 0 & 0 & 0 & -1 & 2
+    \end{pmatrix},\\
+    M_7 :=
+    \begin{pmatrix}
+      2 & 0 & -1 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 2 & 0 & -1 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 3/2 & -1 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 5/6 & -1 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 4/5 & -1 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 3/4 & -1 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 & 2/3 & -1 \\
+      0 & 0 & 0 & 0 & 0 & 0 & 0 & 1/2
+    \end{pmatrix}.
+  \end{gather}
+\end{defi}
+
+\begin{lem}
+  \label{lem:M7_upperTrianglar}
+  \lean{E8Lattice.M7_upperTrianglar}
+  \leanok
+  $M_7$は上三角である．
+\end{lem}
+
+\begin{proof}
+  \leanok
+  \uses{defi:M0-M7}
+  略．
+\end{proof}
+
+\begin{lem}
+  \label{lem:M7_det}
+  \lean{E8Lattice.M7_det}
+  \leanok
+  $\det M_7 = 1$である．
+\end{lem}
+
+\begin{proof}
+  \leanok
+  \uses{lem:M7_upperTrianglar, defi:M0-M7}
+  補題~\ref{lem:M7_upperTrianglar}より，$M_7$の行列式は対角成分たちの積であるから
+  \begin{equation}
+    \det M_7
+    = 2 \cdot 2 \cdot (3 / 2) \cdot (5 / 6) \cdot (4 / 5) \cdot (3 / 4) \cdot (2 / 3) \cdot (1 / 2)\\
+    = 1.
+  \end{equation}
+\end{proof}
+
+\begin{thm}
+  \label{thm:E8_det}
+  \lean{E8Lattice.E8_det}
+  \leanok
+  $E_8$のCartan行列の行列式は$1$である．
+\end{thm}
+
+\begin{proof}
+  \uses{defi:M0-M7, lem:M7_det}
+  補題~\ref{lem:M7_det}より
+  \begin{equation}
+    (\textrm{求める行列式})
+    = \det M_0
+    = \det M_1
+    = \cdots
+    = \det M_7
+    = 1.
+  \end{equation}
+\end{proof}
+
+\begin{defi}
+  \label{defi:B}
+  \lean{E8Lattice.B}
+  \leanok
+  $B$を$E_8$のCartan行列$C (= M_0) \in \M_8(\Z)$から定まる双線型形式とする：
+  \begin{equation}
+    B(x, y) := \transpose{x} C y = \inner{x}{Cy} \qquad (\forall x, y \in \Z^8).
+  \end{equation}
+\end{defi}
+
+\begin{lem}
+  \label{lem:inner_self_calc}
+  \lean{E8Lattice.inner_self_calc}
+  \leanok
+  任意の$x \in \Z^8$に対し，次が成り立つ：
+  \begin{equation}
+    \begin{split}
+      B(x, x) ={}& 2 (x_0^2 + x_1^2 + x_2^2 + x_3^2 + x_4^2 + x_5^2 + x_6^2 + x_7^2\\
+      &- (x_0 x_2 + x_1 x_3 + x_2 x_3 + x_3 x_4 + x_4 x_5 + x_5 x_6 + x_6 x_7))
+    \end{split}
+  \end{equation}
+\end{lem}
+
+\begin{proof}
+  \leanok
+  \uses{defi:B}
+  内積の形にして，あとは具体的に計算：
+  \begin{equation}
+    B(x, x)
+    = \inner{x}{Cx}
+    = (\textrm{右辺}).
+  \end{equation}
+\end{proof}
+
+\begin{lem}
+  \label{lem:inner_self_comp_sq}
+  \lean{E8Lattice.inner_self_comp_sq}
+  \leanok
+  任意の$x \in \Z^8$に対し，平方完成すると次のようになる：
+  \begin{equation}
+    \begin{split}
+      B(x, x) ={}& \left( \sqrt{2} \, x_0 - \sqrt{\frac{1}{2}} \, x_2 \right)^2 + \left( \sqrt{2} \, x_1 - \sqrt{\frac{1}{2}} \, x_3 \right)^2 + \left( \sqrt{\frac{3}{2}} \, x_2 - \sqrt{\frac{2}{3}} \, x_3 \right)^2 \\
+      & + \left( \sqrt{\frac{5}{6}} \, x_3 - \sqrt{\frac{6}{5}} \, x_4 \right)^2 + \left( \sqrt{\frac{4}{5}} \, x_4 - \sqrt{\frac{5}{4}} \, x_5 \right)^2 + \left( \sqrt{\frac{3}{4}} \, x_5 - \sqrt{\frac{4}{3}} \, x_6 \right)^2 \\
+      & + \left( \sqrt{\frac{2}{3}} \, x_6 - \sqrt{\frac{3}{2}} \, x_7 \right)^2 + \frac{1}{2} \, x_7^2
+    \end{split}
+  \end{equation}
+\end{lem}
+
+\begin{proof}
+  \leanok
+  \uses{lem:inner_self_calc}
+  左辺に補題~\ref{lem:inner_self_calc}を代入して計算すれば得られる．
+\end{proof}
+
+\begin{thm}
+  \label{thm:add_inner}
+  \lean{E8Lattice.AddInner}
+  \leanok
+  $\forall x, y, z \in \Z^8,\ B(x+y, z) = B(x, z) + B(y, z)$.
+\end{thm}
+
+\begin{proof}
+  \leanok
+  \uses{defi:B}
+  計算するだけ．
+\end{proof}
+
+\begin{thm}
+  \label{thm:inner_sym}
+  \lean{E8Lattice.InnerSym}
+  \leanok
+  $\forall x, y \in \Z^8,\ B(x, y) = B(y, x)$.
+\end{thm}
+
+\begin{proof}
+  \leanok
+  \uses{defi:B}
+  計算するだけ．
+\end{proof}
+
+\begin{thm}
+  \label{thm:inner_self}
+  \lean{E8Lattice.InnerSelf}
+  \leanok
+  $\forall x \in \Z^8,\ B(x, x) \ge 0$.
+\end{thm}
+
+\begin{proof}
+  \leanok
+  \uses{lem:inner_self_comp_sq}
+  補題~\ref{lem:inner_self_comp_sq}より，$B(x, x)$は平方の和で表せるから成り立つ．
+\end{proof}
+
+\begin{thm}
+  \label{thm:inner_self_eq_zero}
+  \lean{E8Lattice.InnerSelfEqZero}
+  \leanok
+  $\forall x \in \Z^8,\ B(x, x) = 0 \implies x = 0$.
+\end{thm}
+
+\begin{proof}
+  \leanok
+  \uses{lem:inner_self_comp_sq}
+  補題~\ref{lem:inner_self_comp_sq}より，$B(x, x)$は平方の和で表せ，$= 0$とすると各項が$0$である．
+  よって，最後の項に注目すると，$x_7 = 0$である．
+  したがって，最後から2番目の項に注目すると，$x_6 = 0$である．
+  これを繰り返すと，$x_0 = \cdots = x_7 = 0$を得る．
+\end{proof}
+
+\begin{thm}
+  \label{thm:even}
+  \lean{E8Lattice.InnerEven}
+  \leanok
+  $\forall x \in \Z^8,\ 2 \mid \inner{x}{x}_{\Z}$.
+\end{thm}
+
+\begin{proof}
+  \leanok
+  \uses{lem:inner_self_calc}
+  補題~\ref{lem:inner_self_calc}より従う．
+\end{proof}
+
+\begin{thm}
+  \label{thm:unimodular}
+  %\lean{E8Lattice.unimodular}
+  \leanok
+  $E_8$格子はunimodularである．
+\end{thm}
+
+\begin{proof}
+  sorry.
+\end{proof}
+
+\begin{thm}
+  \label{thm:exists_E8}
+  \lean{E8Lattice.exists_E8}
+  \leanok
+  $E_8$格子は存在する．
+\end{thm}
+
+\begin{proof}
+  sorry.
+\end{proof}
+
+\begin{thm}
+  $E_8$格子$\Lambda$に対し，$\forall n \in \N,\ \#\set{x \in \Lambda}{B(x, x) = n} < \infty$.
+\end{thm}
+
+\begin{proof}
+  sorry.
+\end{proof}
+
+\begin{lem}
+  \label{lem:card_norm_2}
+  \lean{E8Lattice.card_norm_2}
+  \leanok
+  $E_8$格子$\Lambda$に対し，$\#\set{x \in \Lambda}{B(x, x) = 2} = 240$.
+\end{lem}
+
+\begin{proof}
+  sorry.
+\end{proof}
