@@ -11,25 +11,14 @@
 % [chapter] at the end of the next line.
 
 \theoremstyle{definition}
-\newtheorem{defi}{定義}[section]
-\newtheorem{thm}[defi]{定理}
-\newtheorem{prop}[defi]{命題}
-\newtheorem{lem}[defi]{補題}
-\newtheorem{cor}[defi]{系}
-\newtheorem{rem}[defi]{注意}
-\newtheorem{exa}[defi]{例}
-\newtheorem{exe}[defi]{演習}
-\newtheorem{fact}[defi]{事実}
-\newtheorem*{defi*}{定義}
-\newtheorem*{thm*}{定理}
-\newtheorem*{prop*}{命題}
-\newtheorem*{lem*}{補題}
-\newtheorem*{cor*}{系}
-\newtheorem*{rem*}{注意}
-\newtheorem*{exa*}{例}
-\newtheorem*{exe*}{演習}
-\newtheorem*{fact*}{事実}
-\newtheorem*{hosoku*}{補足}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{proposition}[theorem]{命題}
+\newtheorem{lemma}[theorem]{補題}
+\newtheorem{corollary}[theorem]{系}
+\newtheorem{definition}[theorem]{定義}
+\newtheorem{remark}[theorem]{注意}
+\newtheorem{fact}[theorem]{事実}
+\newtheorem{example}[theorem]{例}
 
 \newcommand{\st}{\ \text{s.t.}\ }
 \newcommand{\map}[2]{#1 \rightarrow #2}
@@ -58,37 +47,8 @@
 \newcommand{\Ker}{\operatorname{Ker}}
 \newcommand{\Aut}{\operatorname{Aut}}
 \newcommand{\End}{\operatorname{End}}
-\newcommand{\ann}[1]{\operatorname{Ann}\, ({#1})}
-\newcommand{\Co}{\operatorname{Co}}
 \newcommand{\Fix}{\operatorname{Fix}}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator*{\esssup}{ess\,sup}
-
-% figureのキャプションをsectionに関連づける
-\counterwithin{figure}{section}
-
-% 式番号をsectionと関連づける
-\numberwithin{equation}{section}
+\newcommand{\proj}{\operatorname{proj}}
 
 % 数式番号を参照されたもののみ表示
 \mathtoolsset{showonlyrefs=true}
-
-% 証明環境の見出しを日本語に
-\def\proofname{\textbf{証明}}
-
-% 証明環境の再定義
-\makeatletter
-\renewenvironment{proof}[1][\proofname]{\par
-\pushQED{\qed}%
-\normalfont \topsep6\p@\@plus6\p@\relax
-\trivlist
-\item\relax
-{\bfseries
-#1\@addpunct{\textbf{.}}}\hspace\labelsep\ignorespaces
-}{
-\popQED\endtrivlist\@endpefalse
-}
-\makeatother
-
-% 証明環境の最後を黒四角に
-\renewcommand{\qedsymbol}{$\blacksquare$}

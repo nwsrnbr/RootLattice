@@ -139,7 +139,7 @@ lemma inner_self_comp_sq (x : Fin 8 → ℤ) : (B x) x =
     ring_nf
     simp
     ring_nf
-    simp [mul_inv_cancel]
+    simp
     ring
 
 theorem AddInner (x y z : Fin 8 → ℤ) : (B (x + y)) z = (B x) z + (B y) z := by
@@ -154,7 +154,7 @@ theorem InnerSym (x y : Fin 8 → ℤ) : (B x) y = (B y) x := by
   ring
 
 theorem InnerSelf (x : Fin 8 → ℤ) : (B x) x ≥ 0 := by
-  simp [inner]
+  simp
   have (a : ℤ) : (0 : ℤ) ≤ a ↔ (0 : ℝ) ≤ (a : ℝ) := by simp -- (整数) ≤ (整数) ↔ (実数) ≤ (実数) の変換
   rw [this, inner_self_comp_sq]
   repeat'

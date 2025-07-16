@@ -6,87 +6,57 @@
 % the current file can be a simple sequence of \input. Otherwise It
 % can start with a \section or \chapter for instance.
 
-\section{reflection groupsとroot lattices}
-ここで登場する記号はMathlibとは関係ない独立したものであり，証明もMathlibのものとは異なる場合がある．
+\section{Reflections}
+以下，$\Bbbk$を$\R$または$\C$とし(Leanでは$\mathtt{RCLike}$)，$E$を$\Bbbk$-内積空間，$K$を$E$の$\Bbbk$-部分加群とする．
 
-以下，$V$を$\R^n$のsubspaceとし，$\alpha, \beta \in V$の内積を$\inner{\alpha}{\beta}$と書き，$\alpha$のノルムを$\norm{\alpha} = \sqrt{\inner{\alpha}{\alpha}}$と書く．
-\begin{defi}
-  \label{defi:orthogonal_transformation}
-  $f : \map{V}{V}$を線型写像とする．
-  このとき，$f$が\textbf{直交変換}であるとは，
-  \begin{equation}
-    \inner{f(\alpha)}{f(\beta)} = \inner{\alpha}{\beta}
-  \end{equation}
-  が成り立つことである．
-  また，$V$上の直交変換全体の集合を$O(V)$と書く．
-\end{defi}
-
-\begin{rem}
-  \label{rem:orthogonal_transformation_norm}
-  \lean{LinearIsometryEquiv}
-  \leanok
-  定義から$\norm{f(\alpha)} = \norm{\alpha}$がすぐわかる．
-\end{rem}
-
-\begin{rem}
-  \label{rem:orthogonal_transformation_one-to-one}
-  $f \in O(\R^n)$とする．
-  $O(n) := \set{A}{\transpose{A} A = I_n}$ (i.e., 直交行列全体)とすると，$A \in O(n)$を用いて$f(x) = Ax$と表せる．
-  よって，次の1対1対応がある：
-  \begin{equation}
-    \begin{array}{ccc}
-    O(n) & \xleftrightarrow[\text{one-to-one}]{\simeq}  & O(\R^n) \\
-    \rotatebox[origin=c]{90}{$\in$} & & \rotatebox[origin=c]{90}{$\in$} \\
-    A & \longleftrightarrow & f(x) = Ax
-    \end{array}
-  \end{equation}
-\end{rem}
-
-以下，$\bm{k}$を$\R$または$\C$とし(Leanでは$\mathtt{RCLike}$)，$E$を$\bm{k}$-内積空間，$K$を$E$の$\bm{k}$-部分加群とする．
-
-\begin{defi}
+\begin{definition}
   \label{defi:orthogonalProjection}
   \lean{Submodule.orthogonalProjection}
   \leanok
   $\forall v \in E,\ \exists w \in K \st v - w \in K^\perp$とする．
-  線型連続写像$\operatorname{proj}_K : \map{E}{K}; \operatorname{proj}_K(v) = w$を\textbf{正射影(projection)}という．
-  すなわち，$x \in E$を$x = \operatorname{proj}_K(x) + (x - \operatorname{proj}_K(x)) \in K \oplus K^\perp$と書ける．
-\end{defi}
+  線型連続写像$\proj_K : \map{E}{K}; \proj_K(v) = w$を\textbf{正射影(projection)}という．
+  すなわち，$V = \proj_K(v) + (v - \proj_K(v)) \in K \oplus K^\perp$と書ける．
+\end{definition}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:orthogonalProjection_singleton}
   \lean{Submodule.orthogonalProjection_singleton}
   \leanok
   任意の$v, w \in E$に対して次が成り立つ：
   \begin{equation}
-    \operatorname{proj}_{\bm{k}v}(w) = \frac{\inner{v}{w}}{\norm{v}^2} v.
+    \proj_{\Bbbk v}(w) = \frac{\inner{v}{w}}{\norm{v}^2} v.
   \end{equation}
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
   略．
 \end{proof}
 
-\begin{defi}
+\begin{definition}
   \label{defi:reflection}
   \lean{Submodule.reflection}
   \leanok
   次の直交変換を\textbf{reflection}という：
   \begin{equation}
-    s_K : \map{E}{E};\ x \mapsto 2 \cdot \operatorname{proj}_K(x) - x.
+    s_K : \map{E}{E};\ x \mapsto 2 \cdot \proj_K(x) - x.
   \end{equation}
-\end{defi}
+\end{definition}
 
-\begin{thm}
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{theorem}
   \label{thm:reflection_singleton_apply}
   \lean{Submodule.reflection_singleton_apply}
   \leanok
   任意の$u, v \in E$に対し，次が成り立つ：
   \begin{equation}
-    s_{\bm{k}u}(v) = 2 \frac{\inner{u}{v}}{\norm{u}^2}u - v.
+    s_{\Bbbk u}(v) = 2 \frac{\inner{u}{v}}{\norm{u}^2}u - v.
   \end{equation}
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
@@ -94,16 +64,16 @@
   略．
 \end{proof}
 
-\begin{rem}
-  以前，$\alpha$に関するreflectionは
+\begin{remark}
+  以前，$u$に関するreflectionは
   \begin{equation}
-    s_\alpha (\lambda) = \lambda - 2\frac{\inner{\alpha}{\lambda}}{\inner{\alpha}{\alpha}} \alpha.
+    s_u (v) = v - 2\frac{\inner{u}{v}}{\inner{u}{u}} u
   \end{equation}
   と表せることを見た．
-  定理~\ref{thm:reflection_singleton_apply}からわかるように，$s_{\bm{k}\alpha}$は$s_\alpha$と逆向き(すなわち，$s_\alpha = s_{H_\alpha} = s_{(\R \alpha)^\perp}$)である．
-\end{rem}
+  定理~\ref{thm:reflection_singleton_apply}からわかるように，$s_{\Bbbk \alpha}$は$s_\alpha$と逆向きである．
+\end{remark}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:reflection_eq_self_iff}
   \lean{Submodule.reflection_eq_self_iff}
   \leanok
@@ -111,43 +81,47 @@
   \begin{equation}
     s_K(x) = x \iff x \in K.
   \end{equation}
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
   略．
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:reflection_map_apply}
   \lean{Submodule.reflection_map_apply}
   \leanok
-  $E'$を$\bm{k}$-内積空間，$f : \map{E}{E'}$を線形同型な等長写像(すなわち，$\norm{f(x)} = \norm{x}$)とする．
+  $E'$を$\Bbbk $-内積空間，$f : \map{E}{E'}$を線形同型な等長写像(すなわち，$\norm{f(x)} = \norm{x}$)とする．
   このとき，任意の$x \in E'$に対して次が成り立つ：
   \begin{equation}
     s_{f(K)}(x) = f(s_K(f^{-1}(x))).
   \end{equation}
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
   略．
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:reflection_mem_subspace_orthogonalComplement_eq_neg}
   \lean{Submodule.reflection_mem_subspace_orthogonalComplement_eq_neg}
   \leanok
   任意の$v \in E$に対し，$v \in K^\perp$なら$s_K(v) = -v$である．
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
   略．
 \end{proof}
 
-\begin{defi}
-  $O(V)$の部分群$W$が次を満たすとき，$W$を\textbf{finite reflection group}という：
+\section{Reflection groupsとroot systems}
+\begin{definition}
+  \label{defi:FiniteReflectionGroup}
+  \lean{FiniteReflectionGroup}
+  \leanok
+  群$W$が次を満たすとき，$W$を\textbf{finite reflection group}という：
   \begin{enumerate}[label=(\roman*)]
     \item $W$はfinite group,
     \item $W$はreflectionsで生成される，すなわち
@@ -155,25 +129,21 @@
       \forall w \in W,\ \exists s_{\alpha_1}, \ldots, s_{\alpha_r} \in W \textrm{: reflections} \st w = s_{\alpha_1} \cdots s_{\alpha_r}.
     \end{equation}
   \end{enumerate}
-\end{defi}
+\end{definition}
 
-\begin{rem}
-  $s_\alpha^2 = 1.$
-\end{rem}
-
-\begin{defi}
+\begin{definition}
   finite reflection group $W$が次を満たすとき，$W$は\textbf{essential}であるという：
   \begin{equation}
     \Fix(W) := \set{\lambda \in V}{\forall w \in W,\ w(\lambda) = \lambda} = \{0\}.
   \end{equation}
-\end{defi}
+\end{definition}
 
-\begin{rem}
+\begin{remark}
   $W$がessentialでないとき，$V = \Fix(W) \oplus \Fix(W)^\perp$である．
   また，部分空間$\Fix(W)^\perp$上では$W$はessentialである．
-\end{rem}
+\end{remark}
 
-\begin{defi}
+\begin{definition}
   空でない$V$の有限部分集合$\Phi$が次を満たすとき，$\Phi$を\textbf{root system}という：
   \begin{enumerate}[label=(\roman*)]
     \item $\Phi$は$V$を生成する, \label{defi:root_gen}
@@ -181,22 +151,22 @@
     \item $\forall \alpha, \beta \in \Phi,\ s_\beta(\alpha) \in \Phi$. \label{defi:root_ref_closed}
   \end{enumerate}
   また，$\Phi$の元を\textbf{root vector}，または単に\textbf{root}という．
-\end{defi}
+\end{definition}
 
-\begin{defi}
+\begin{definition}
   root system $\Phi$が次を満たすとき，\textbf{crystallographic}であるという：
   \begin{enumerate}[label=(\roman*)]
     \setcounter{enumi}{3}
     \item $\forall \alpha, \beta \in \Phi,\ 2 \dfrac{\inner{\alpha}{\beta}}{\inner{\alpha}{\alpha}} \in \Z$.
   \end{enumerate}
-\end{defi}
+\end{definition}
 
 finite reflection groupが与えられると，それに対応するroot systemが存在する：
 
-\begin{prop} \label{prop:frg_to_root}
+\begin{proposition} \label{prop:frg_to_root}
   $W$をessential finite reflection groupとする．
   このとき，$\Phi := \set{\alpha \in V}{\norm{\alpha} = 1,\ s_\alpha \in W}$はroot systemである．
-\end{prop}
+\end{proposition}
 \begin{proof}
   \ref{defi:root_gen}を示すために，$\Fix (W) = \bigcap_{\alpha \in \Phi} H_\alpha$を示す：
 
@@ -251,10 +221,10 @@ finite reflection groupが与えられると，それに対応するroot system�
 \end{proof}
 
 逆に，root systemが与えられると，それに対応するfinite reflection groupが存在する：
-\begin{prop}
+\begin{proposition}
   $\Phi \subseteq V$をroot systemとする．
   このとき，$\set{s_\alpha}{\alpha \in \Phi}$が生成する群$W_\Phi$はessential finite reflection groupである．
-\end{prop}
+\end{proposition}
 \begin{proof}
   命題~\ref{prop:frg_to_root}の証明中\ref{defi:root_gen}で，$\Phi = \{\alpha_1 \ldots, \alpha_r\}$とし，$W$を$W_\Phi$と読み替えれば$\Fix(W_\Phi) = \bigcap_{\alpha \in \Phi} H_\alpha$が成り立つ．
   よって，$\Phi$は$V$を生成するから$\Fix(W_\Phi)^\perp = \sum_{\alpha \in \Phi} \R\alpha = V$である．
@@ -284,23 +254,24 @@ finite reflection groupが与えられると，それに対応するroot system�
 root systemはfinite reflection groupの生成系を与えているが，群の生成元の個数はできるだけ少なくしたい．
 そこで，root systemを``うまく''取る方法を考える．
 
-\begin{defi}
+\section{Positive root systemsとsimple root systems}
+\begin{definition}
   $\Phi \subseteq V$をroot systemとし，$p \in V \setminus \{0\}$は$\forall \alpha \in \Phi,\ \inner{\alpha}{p} \ne 0$を満たすとする．
   このとき，$\Pi := \set{\alpha \in \Phi}{\inner{\alpha}{p} > 0}$を\textbf{positive root system}という．
-\end{defi}
+\end{definition}
 
-\begin{rem}
+\begin{remark}
   $\Pi$は$p$の取り方による．
-\end{rem}
+\end{remark}
 
-\begin{defi}
+\begin{definition}
   $\Pi$をpositive root systemとする．
   $\Delta \subseteq \Pi$が次を満たすとき，$\Delta$を\textbf{simple root system}という：
   \begin{enumerate}[label=(\roman*)]
     \item $\Delta$は$V$の基底,
     \item $\forall \alpha \in \Pi,\ \exists c_\beta \ge 0 \st \alpha = \sum_{\beta \in \Delta} c_\beta \beta$.
   \end{enumerate}
-\end{defi}
+\end{definition}
 
 simple root systemは必ず存在し，しかも一意である：
 
@@ -312,25 +283,28 @@ simple root systemは必ず存在し，しかも一意である：
   \end{enumerate}
 \end{fact}
 
+\section{Finite reflection groupsの分類}
 以下，essential finite reflection group $W$に対し，そのroot systemを$\Phi$，そのsimple root systemを$\Delta$とする．
 また，$\alpha, \beta \in \Delta$に対し，$m(\alpha, \beta)$を$s_\alpha s_\beta$の位数，$c(\beta, \alpha) = 2\dfrac{\inner{\beta}{\alpha}}{\inner{\alpha}{\alpha}}$とする．
 
-\begin{rem}
+\begin{remark}
   $s_\alpha^2 = 1$より$m(\alpha, \alpha) = 1$である．
   また，$s_\beta s_\alpha = (s_\alpha s_\beta)^{-1}$より$m(\alpha, \beta) = m(\beta, \alpha)$である．
-\end{rem}
+\end{remark}
 
-\begin{lem} \label{lem:inner_order}
+
+\begin{lemma}
+  \label{lem:inner_order}
   $\alpha \ne \beta \in \Delta$とする．このとき，次が成り立つ：
   \begin{equation}
     \inner{\alpha}{\beta}
     = -\norm{\alpha} \norm{\beta} \cos\frac{\pi}{m(\alpha, \beta)}.
   \end{equation}
-\end{lem}
+\end{lemma}
 
-\begin{prop}
+\begin{proposition}
   $\alpha$と$\beta$は線型独立とする．$\Phi$がcrystallographicなとき，$m(\alpha, \beta) = 2, 3, 4, 6$である．
-\end{prop}
+\end{proposition}
 \begin{proof}
   補題~\ref{lem:inner_order}より，
   \begin{equation}
@@ -365,58 +339,453 @@ simple root systemは必ず存在し，しかも一意である：
   \end{table}
 \end{proof}
 
-\begin{defi}
+\begin{definition}
   $\Delta = \{\alpha_1, \ldots, \alpha_r\}$とする．
   このとき，$r$次正方行列$C := (c(\alpha_i, \alpha_j))$を$\Phi$の\textbf{Cartan matrix}という．
-\end{defi}
+  また，$r$次正方行列$M := (m(\alpha_i, \alpha_j))$を$\Phi$の\textbf{Coxeter matrix}という．
+\end{definition}
 
-\begin{defi}
+Coxeter matrixの定義から分かるように，Coxeter matrixとCoxeter-Dynkin diagramは一対一に対応する．
+
+\begin{example}
+  後述の図~\ref{fig:coxeter_diag_classification}において，$E_8$のCertan matrix, Coxeter matrixはそれぞれ次のようになる：
+  \begin{equation}
+    C_{E_8} =
+    \begin{pmatrix}
+      2 & 0 & -1 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 2 & 0 & -1 & 0 & 0 & 0 & 0 \\
+      -1 & 0 & 2 & -1 & 0 & 0 & 0 & 0 \\
+      0 & -1 & -1 & 2 & -1 & 0 & 0 & 0 \\
+      0 & 0 & 0 & -1 & 2 & -1 & 0 & 0 \\
+      0 & 0 & 0 & 0 & -1 & 2 & -1 & 0 \\
+      0 & 0 & 0 & 0 & 0 & -1 & 2 & -1 \\
+      0 & 0 & 0 & 0 & 0 & 0 & -1 & 2
+    \end{pmatrix},\qquad
+    M_{E_8} =
+    \begin{pmatrix}
+      1 & 2 & 3 & 2 & 2 & 2 & 2 & 2 \\
+      2 & 1 & 2 & 3 & 2 & 2 & 2 & 2 \\
+      3 & 2 & 1 & 3 & 2 & 2 & 2 & 2 \\
+      2 & 3 & 3 & 1 & 3 & 2 & 2 & 2 \\
+      2 & 2 & 2 & 3 & 1 & 3 & 2 & 2 \\
+      2 & 2 & 2 & 2 & 3 & 1 & 3 & 2 \\
+      2 & 2 & 2 & 2 & 2 & 3 & 1 & 3 \\
+      2 & 2 & 2 & 2 & 2 & 2 & 3 & 1
+    \end{pmatrix}
+  \end{equation}
+\end{example}
+
+\begin{definition}
   $\Delta = \{\alpha_1, \ldots, \alpha_r\}$とする．
   このとき，$\Phi$の\textbf{Coxeter diagram}を次のように定義する：
   \begin{enumerate}[label=(\roman*)]
     \item $r$個の頂点を持つ，
-    \item 頂点$i$と頂点$j$は$m(\alpha_i, \alpha_j)$と書かれた辺で結ぶ，\label{defi:node_m}
+    \item 頂点$\alpha_i$と頂点$\alpha_j$は$m(\alpha_i, \alpha_j)$と書かれた辺で結ぶ，\label{defi:node_m}
     \item 特に，$m(\alpha_i, \alpha_j) = 2, 3, 4, 6$のときは，\ref{defi:node_m}の代わりに表~\ref{fig:c_m_relation}で対応する$c(\alpha_i, \alpha_j) c(\alpha_j, \alpha_i)$本の辺で結ぶ．
   \end{enumerate}
-\end{defi}
+\end{definition}
 
-\begin{defi}
+\begin{definition}
   Coxeter diagramに次の条件を追加したものを\textbf{Coxeter-Dynkin diagram}という：
   \begin{enumerate}[label=(\roman*)]
     \setcounter{enumi}{3}
-    \item $\abs{c(\alpha_i, \alpha_j)} < \abs{c(\alpha_j, \alpha_i)}$のとき，頂点$i$から頂点$j$に向きをつける．
+    \item $\abs{c(\alpha_i, \alpha_j)} < \abs{c(\alpha_j, \alpha_i)}$のとき，頂点$\alpha_i$から頂点$\alpha_j$に向きをつける．
   \end{enumerate}
-\end{defi}
+\end{definition}
 
-\begin{defi}
-  root system $\Phi$で生成されるlattice，すなわち次の集合$\Lambda$を\textbf{root lattice}という：
+\begin{proposition}
+  \label{prop:direct_prod_is_FRG}
+  $V_1 \subseteq \R^m,\ V_2 \subseteq \R^n$とし，$W_1, W_2$をそれぞれ$V_1, V_2$上のfinite reflection groupsとする．
+  このとき，$W_1 \times W_2$は$V_1 \oplus V_2 \subseteq \R^m \oplus \R^n = \R^{m+n}$上のfinite reflection groupである．
+  ここで，
   \begin{equation}
-    \Lambda := \set{\sum_{i=1}^{r} s_i \alpha_i}{\alpha_i \in \Phi,\ s_i \in \Z}.
+    (w_1, w_2)(\lambda_1, \lambda_2) = (w_1(\lambda_1), w_2(\lambda_2)),\quad (w_1, w_2) \in W_1 \times W_2,\ (\lambda_1, \lambda_2) \in V_1 \oplus V_2
   \end{equation}
-\end{defi}
+  と定める．
+\end{proposition}
 
+\begin{definition}
+  \label{defi:irreducible}
+  $W$をfinite refrection group，$G$をそれに対応するCoxeter-Dynkin diagramとする．
+  このとき，$G$が連結な(すべての頂点が結ばれている)とき，$W$や$G$は\textbf{既約}という．
+  Coxeter matrixの言葉でいえば，任意の成分が$0$でないときである．
+\end{definition}
+
+\begin{theorem}
+  \label{thm:diag_is_simeq_implies_FRG_is_simeq}
+  $\Phi, \Phi'$をroot systemsとし，これらに対応するsimple root systemsをそれぞれ$\Delta, \Delta'$とする．
+  また，$G_\Delta, G_{\Delta'}$をそれぞれ$\Delta, \Delta'$のCoxeter-Dynkin diagramとする．
+  このとき，$G_\Delta \simeq G_{\Delta'}$なら$W_\Phi \simeq W_{\Phi'}$である．
+\end{theorem}
+
+\begin{theorem}
+  \label{thm:coxeter_diag_classification}
+  既約essential finite reflection groupのsimple root systemから定まるCoxeter-Dynkin diagramは，次の図においてcrystallographicであれば上9つ，そうでなければ下3つのいずれかである：
+\end{theorem}
+
+%\iffalse
+\newpage
+  \begin{figure}[b]
+    \begin{center}
+      \begin{tikzpicture}[scale=1.0]
+        % A_n
+        \foreach \i in {1,...,7}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,0) {};
+				\foreach \i in {1,...,4,6}
+					\draw (\i) -- (\the\numexpr\i+1\relax);
+				\draw[dashed] (5) -- (6);
+        \node[below] at (1) {$\alpha_1$};
+        \node[below] at (2) {$\alpha_2$};
+        \node[below] at (3) {$\alpha_3$};
+        \node[below] at (4) {$\alpha_4$};
+        \node[below] at (5) {$\alpha_5$};
+        \node[below] at (6) {$\alpha_{n-1}$};
+        \node[below] at (7) {$\alpha_n$};
+        \node[left] at (1) {$A_n$ : \mbox{\hspace{10pt}}};
+        \node[right] at (7) {\mbox{\hspace{10pt}}$(n \ge 1)$};
+
+        % B_n
+        \foreach \i in {1,...,7}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-1.5) {};
+				\foreach \i in {2,...,4,6}
+					\draw (\i) -- (\the\numexpr\i+1\relax);
+				\draw[double distance=3pt, postaction={decorate}, decoration={markings,mark=at position 0.7 with {\arrow{>}}}] (2) -- (1);
+				\draw[dashed] (5) -- (6);
+        \node[below] at (1) {$\alpha_1$};
+        \node[below] at (2) {$\alpha_2$};
+        \node[below] at (3) {$\alpha_3$};
+        \node[below] at (4) {$\alpha_4$};
+        \node[below] at (5) {$\alpha_5$};
+        \node[below] at (6) {$\alpha_{n-1}$};
+        \node[below] at (7) {$\alpha_n$};
+        \node[left] at (1) {$B_n$ : \mbox{\hspace{10pt}}};
+        \node[right] at (7) {\mbox{\hspace{10pt}}$(n \ge 2)$};
+
+        % C_n
+				\foreach \i in {1,...,7}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-3) {};
+				\foreach \i in {2,...,4,6}
+					\draw (\i) -- (\the\numexpr\i+1\relax);
+				\draw[double distance=3pt, postaction={decorate}, decoration={markings,mark=at position 0.7 with {\arrow{>}}}] (1) -- (2);
+				\draw[dashed] (5) -- (6);
+        \node[below] at (1) {$\alpha_1$};
+        \node[below] at (2) {$\alpha_2$};
+        \node[below] at (3) {$\alpha_3$};
+        \node[below] at (4) {$\alpha_4$};
+        \node[below] at (5) {$\alpha_5$};
+        \node[below] at (6) {$\alpha_{n-1}$};
+        \node[below] at (7) {$\alpha_n$};
+        \node[left] at (1) {$C_n$ : \mbox{\hspace{10pt}}};
+        \node[right] at (7) {\mbox{\hspace{10pt}}$(n \ge 2)$};
+
+        % D_n
+        \foreach \i in {2,...,7}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-5) {};
+				\foreach \i in {2,...,4,6}
+					\draw (\i) -- (\the\numexpr\i+1\relax);
+				\draw[dashed] (5) -- (6);
+				\node[circle, draw, fill=white, inner sep=1.5pt] (0) at (1,-4.5) {};
+				\node[circle, draw, fill=white, inner sep=1.5pt] (1) at (1,-5.5) {};
+				\foreach \i in {0,1}
+					\draw (\i) -- (2);
+        \node[below] at (0) {$\alpha_1$};
+        \node[below] at (1) {$\alpha_2$};
+        \node[below] at (2) {$\alpha_3$};
+        \node[below] at (3) {$\alpha_4$};
+        \node[below] at (4) {$\alpha_5$};
+        \node[below] at (5) {$\alpha_6$};
+        \node[below] at (6) {$\alpha_{n-1}$};
+        \node[below] at (7) {$\alpha_n$};
+        \node[left] at (1, -5) {$D_n$ : \mbox{\hspace{10pt}}};
+        \node[right] at (7) {\mbox{\hspace{10pt}}$(n \ge 4)$};
+
+        % G_2
+        \foreach \i in {1,2}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-7) {};
+				\draw[double distance=3pt, postaction={decorate}, decoration={markings,mark=at position 0.7 with {\arrow{>}}}] (1) -- (2);
+				\draw (1) -- (2);
+        \node[below] at (1) {$\alpha_1$};
+        \node[below] at (2) {$\alpha_2$};
+        \node[left] at (1) {$G_2$ : \mbox{\hspace{10pt}}};
+
+        % F_4
+        \foreach \i in {1,...,4}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-8.5) {};
+				\foreach \i in {1,3}
+					\draw (\i) -- (\the\numexpr\i+1\relax);
+				\draw[double distance=3pt, postaction={decorate}, decoration={markings,mark=at position 0.7 with {\arrow{>}}}] (2) -- (3);
+        \node[below] at (1) {$\alpha_1$};
+        \node[below] at (2) {$\alpha_2$};
+        \node[below] at (3) {$\alpha_3$};
+        \node[below] at (4) {$\alpha_4$};
+        \node[left] at (1) {$F_4$ : \mbox{\hspace{10pt}}};
+
+        % E_6
+        \foreach \i in {1,...,5}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-10.5) {};
+				\node[circle, draw, fill=white, inner sep=1.5pt] (8) at (3,-9.5) {};
+				\foreach \i in {1,...,4}
+					\draw (\i) -- (\the\numexpr\i+1\relax);
+				\draw (3) -- (8);
+        \node[below] at (1) {$\alpha_1$};
+        \node[right] at (8) {$\alpha_2$};
+        \node[below] at (2) {$\alpha_3$};
+        \node[below] at (3) {$\alpha_4$};
+        \node[below] at (4) {$\alpha_5$};
+        \node[below] at (5) {$\alpha_6$};
+        \node[left] at (1) {$E_6$ : \mbox{\hspace{10pt}}};
+
+        % E_7
+        \foreach \i in {1,...,6}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-12.5) {};
+				\node[circle, draw, fill=white, inner sep=1.5pt] (8) at (3,-11.5) {};
+				\foreach \i in {1,...,5}
+					\draw (\i) -- (\the\numexpr\i+1\relax);
+				\draw (3) -- (8);
+        \node[below] at (1) {$\alpha_1$};
+        \node[right] at (8) {$\alpha_2$};
+        \node[below] at (2) {$\alpha_3$};
+        \node[below] at (3) {$\alpha_4$};
+        \node[below] at (4) {$\alpha_5$};
+        \node[below] at (5) {$\alpha_6$};
+        \node[below] at (6) {$\alpha_7$};
+        \node[left] at (1) {$E_7$ : \mbox{\hspace{10pt}}};
+
+        % E_8
+        \foreach \i in {1,...,7}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-14.5) {};
+				\node[circle, draw, fill=white, inner sep=1.5pt] (8) at (3,-13.5) {};
+				\foreach \i in {1,...,6}
+					\draw (\i) -- (\the\numexpr\i+1\relax);
+				\draw (3) -- (8);
+        \node[below] at (1) {$\alpha_1$};
+        \node[right] at (8) {$\alpha_2$};
+        \node[below] at (2) {$\alpha_3$};
+        \node[below] at (3) {$\alpha_4$};
+        \node[below] at (4) {$\alpha_5$};
+        \node[below] at (5) {$\alpha_6$};
+        \node[below] at (6) {$\alpha_7$};
+        \node[below] at (7) {$\alpha_8$};
+        \node[left] at (1) {$E_8$ : \mbox{\hspace{10pt}}};
+
+        % I_2(m)
+        \foreach \i in {1,2}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-16) {};
+				\draw (1) -- node[midway, above]{$m$} (2);
+        \node[below] at (1) {$\alpha_1$};
+        \node[below] at (2) {$\alpha_2$};
+        \node[left] at (1) {$I_2(m)$ : \mbox{\hspace{10pt}}};
+        \node[right] at (7, -16) {$(m \ge 5, m \ne 6)$};
+
+        % H_3
+        \foreach \i in {1,...,3}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-17.5) {};
+				\draw (1) -- node[midway, above]{$5$} (2);
+        \draw (2) -- (3);
+        \node[below] at (1) {$\alpha_3$};
+        \node[below] at (2) {$\alpha_2$};
+        \node[below] at (3) {$\alpha_1$};
+        \node[left] at (1) {$H_3$ : \mbox{\hspace{10pt}}};
+
+        % H_4
+        \foreach \i in {1,...,4}
+					\node[circle, draw, fill=white, inner sep=1.5pt] (\i) at (\i,-19) {};
+				\draw (1) -- node[midway, above]{$5$} (2);
+        \draw (2) -- (3);
+        \draw (3) -- (4);
+        \node[below] at (1) {$\alpha_4$};
+        \node[below] at (2) {$\alpha_3$};
+        \node[below] at (3) {$\alpha_2$};
+        \node[below] at (4) {$\alpha_1$};
+        \node[left] at (1) {$H_4$ : \mbox{\hspace{10pt}}};
+      \end{tikzpicture}
+    \end{center}
+    \caption{既約essential finite reflection groupのCoxeter-Dynkin diagramの分類}
+    \label{fig:coxeter_diag_classification}
+  \end{figure}
+  %\fi
+
+\newpage
+\begin{proof}
+  まず，これらのdiagramsはfinite reflection groupsに対応することを示す．
+  $\{e_1, \ldots, e_r\}$を$\R^r$の標準基底とする．
+
+  \vspace{10pt}
+  \noindent
+  \underline{$A_n$型}
+
+  \begin{gather}
+    V := \set{\sum_{i=1}^{n+1} a_i e_i}{\sum_{i=1}^{n+1} a_i = 0} \subseteq \R^{n+1},\\
+    \begin{split}
+      \Phi &:= \set{v \in V}{\inner{v}{v} = 2} \cap \bigoplus_{i=1}^{n+1} \Z e_i\\
+      &= \set{e_i - e_j}{1 \le i \ne j \le n+1},
+    \end{split}\\
+    \Delta := \set{\alpha_i := e_i - e_{i+1}}{1 \le i \le n},\\
+    W \simeq \mathfrak{S}_{n+1},\ s_{\alpha_i} \mapsto (i\ j).
+  \end{gather}
+  とすれば，$i \ne j$のとき
+  \begin{equation}
+    (s_{\alpha_i} s_{\alpha_j}\textrm{の位数})
+    = ((i\ i+1)(j\ j+1)\textrm{の位数})
+    = \begin{cases}
+      2 & (|i - j| \ge 2)\\
+      3 & (|i - j| = 1)
+    \end{cases}
+  \end{equation}
+  となるから$A_n$型のdiagramが得られる．
+
+  \vspace{10pt}
+  \noindent
+  \underline{$B_n$型}
+
+  $|\Phi| = 2n^2$で，長さの$2$乗が$1$のものが$2n$個，$2$のものが$2n(n-1)$個ある．
+  \begin{gather}
+    V := \R^n,\\
+    \begin{split}
+      \Phi &:= \set{v \in V}{\inner{v}{v} \in \{1, 2\}} \cap \bigoplus_{i=1}^{n} \Z e_i\\
+      &= \set{\pm e_i}{1 \le i \le n} \cup \set{\pm (e_i + e_j)}{1 \le i < j \le n},
+    \end{split}\\
+    \Delta := \set{\alpha_i := e_i - e_{i+1},\ \alpha_n := e_n}{1 \le i \le n-1},\\
+    W \simeq \mathfrak{S}_n \ltimes (\Z/2\Z)^n,\ \textrm{$\mathfrak{S}_n$は$s_{\alpha_i} \mapsto (i\ j)$で，$(\Z/2\Z)^n$は$e_i \mapsto -e_i$で作用．}
+  \end{gather}
+
+  \vspace{10pt}
+  \noindent
+  \underline{$C_n$型}
+
+  $C_n$型は$B_n$型の``双対''である．
+  \begin{gather}
+    V := \R^n,\\
+    \begin{split}
+      \Phi &:= \set{v \in V}{\inner{v}{v} \in \{2, 4\}} \cap \bigoplus_{i=1}^{n} \Z e_i\\
+      &= \set{\pm 2e_i}{1 \le i \le n} \cup \set{\pm (e_i + e_j)}{1 \le i < j \le n},
+    \end{split}\\
+    \Delta := \set{\alpha_i := e_i - e_{i+1},\ \alpha_n := 2e_n}{1 \le i \le n-1},\\
+    W \simeq \mathfrak{S}_n \ltimes (\Z/2\Z)^n,\ \textrm{作用は$B_n$型と同じ．}
+  \end{gather}
+
+  \vspace{10pt}
+  \noindent
+  \underline{$D_n$型}
+  \begin{gather}
+    V := \R^n,\\
+    \begin{split}
+      \Phi &:= \set{v \in V}{\inner{v}{v} = 2} \cap \bigoplus_{i=1}^{n} \Z e_i\\
+      &= \set{\pm (e_i + e_j)}{1 \le i < j \le n},
+    \end{split}\\
+    \Delta := \set{\alpha_i = e_i - e_{i+1},\ \alpha_n = e_{n-1} + e_n}{1 \le i \le n-1},\\
+    W \simeq \mathfrak{S}_n \ltimes (\Z/2\Z)^{n-1},\ \textrm{$\mathfrak{S}_n$は$s_{\alpha_i} \mapsto (i\ j)$で，$(\Z/2\Z)^{n-1}$は偶数個の符号変換$e_i \mapsto -e_i$で作用．}
+  \end{gather}
+
+  \vspace{10pt}
+  \noindent
+  \underline{$G_2$型}
+  \begin{gather}
+    V := \set{\sum_{i=1}^{3} a_i e_i}{\sum_{i=1}^{3} a_i = 0} \subseteq \R^3,\\
+    \begin{split}
+      \Phi &:= \set{v \in V}{\inner{v}{v} = \{2, 6\}} \cap \bigoplus_{i=1}^{3} \Z e_i\\
+      &= \set{\pm(e_i - e_j)}{1 \le i < j \le 3} \cup \set{\pm(2e_i - e_j - e_k)}{\{i, j, k\} = \{1, 2, 3\}},
+    \end{split}\\
+    \Delta := \{\alpha_1 := e_1 - e_2,\ \alpha_2 = -2e_1 + e_2 + e_3\},\\
+    W \simeq \mathcal{D}_6\ (\textrm{位数12の二面体群}).
+  \end{gather}
+
+  \vspace{10pt}
+  \noindent
+  \underline{$F_4$型}
+
+  補助的に格子$\Lambda \subseteq V$を導入する．$|\Phi| = 48$で，長さの$2$乗が$1$のものと$2$のものがそれぞれ$24$個ある．
+  \begin{gather}
+    V := \R^4,\\
+    \Lambda := \bigoplus_{i=1}^{4} \Z e_i + \Z \left( \frac{1}{2} \sum_{i=1}^{4} e_i \right),\\
+    \begin{split}
+      \Phi &:= \set{v \in \Lambda}{\inner{v}{v} = \{1, 2\}}\\
+      &= \set{\pm (e_i + e_j)}{1 \le i < j \le 4} \cup \set{\pm e_i}{1 \le i \le 4} \cup \{\frac{1}{2}(\pm e_1 \pm e_2 \pm e_3 \pm e_4)\},
+    \end{split}\\
+    \Delta := \{\alpha_1 := e_2-e_3,\ \alpha_2 := e_3-e_4,\ \alpha_3 := e_4,\ \alpha_4 := \frac{1}{2}(e_1-e_2-e_3-e_4)\}.
+  \end{gather}
+
+  \vspace{10pt}
+  \noindent
+  \underline{$E_8$型}
+
+  補助的に格子$\Lambda \subseteq V$を導入する．
+  $|\Phi| = 4 \cdot 28 + 2^8 / 2 = 112 + 128 = 240$である．
+  \begin{gather}
+    V := \R^8,\\
+    \Lambda := \set{\sum_{i=1}^{8} c_i e_i}{c_i \in \Z,\ \sum_{i=1}^{8} e_i \in 2\Z} + \Z \left(\frac{1}{2} \sum_{i=1}^{8} e_i\right),\\
+    \begin{split}
+      \Phi &:= \set{v \in \Lambda}{\inner{v}{v} = 2}\\
+      &= \set{\pm (e_i + e_j)}{1 \le i < j \le 8} \cup \set{\frac{1}{2} \sum_{i=1}^{8} \pm e_i}{\textrm{マイナスが偶数個}},
+    \end{split}\\
+    \Delta := \{\alpha_1 := \frac{1}{2} (e_1 - e_2 - \cdots - e_7 + e_8),\ \alpha_2 := e_1 + e+2,\ \alpha_i = e_{i-1} - e_{i-2}\ (3 \le i \le 8)\}.
+  \end{gather}
+
+  \vspace{10pt}
+  \noindent
+  \underline{$E_7$型}
+
+  Coxeter-Dynkin diagramが$E_8$型の部分グラフであることに注意する．
+  $E_8$型の$\alpha_i$を用いる．
+  $|\Phi| = 4 \cdot 15 + 2 + 2 \cdot (6 + 20 + 6) = 126$である．
+  \begin{gather}
+    V := \R\{\alpha_1, \ldots, \alpha_7\} \subseteq \R^8,\\
+    \begin{split}
+      \Phi &:= \Phi_{E_8} \cap V\\
+      &= \set{\pm (e_i + e_j)}{1 \le i < j \le 6} \cup \{\pm (e_7 - e_8)\} \cup \set{\pm \frac{1}{2} \left(e_7 - e_8 + \sum_{i=1}^{6} \pm e_i\right)}{\textrm{$\sum$の中のマイナスは奇数個}},
+    \end{split}\\
+    \Delta := \{\alpha_1, \ldots, \alpha_7\}.
+  \end{gather}
+
+  \vspace{10pt}
+  \noindent
+  \underline{$E_6$型}
+
+  Coxeter-Dynkin diagramが$E_8$型の部分グラフであることに注意する．
+  $E_8$型の$\alpha_i$を用いる．
+  \begin{gather}
+    V := \R\{\alpha_1, \alpha_6\} \subseteq \R^n,\\
+    \begin{split}
+      \Phi &:= \Phi_{E_8} \cap V\\
+      &= \set{\pm (e_i - e_j)}{1 \le i < j \le 5} \cup \set{\pm \frac{1}{2}\left(e_8 - e_7 - e_6 + \sum_{i=1}^{5} \pm e_i\right)}{\textrm{$\sum$の中のマイナスは奇数個}},
+    \end{split}\\
+    \Delta := \{\alpha_1, \ldots, \alpha_6\}.
+  \end{gather}
+
+\end{proof}
+
+\begin{proposition}
+  $W_1, W_2$をessential finite reflection groupsとし，$G_{\Delta_1}, G_{\Delta_2}$をそれぞれ対応するCoxeter-Dynkin diagramとする．
+  このとき，$W_1 \times W_2$はessential finite reflection groupであり，そのCoxeter-Dynkin diagramは$G_{\Delta_1} \sqcup G_{\Delta_2}$である．
+\end{proposition}
+
+よって，任意のessential finite reflection groupから定まるCoxeter-Dynkin diagramは，図~\ref{fig:coxeter_diag_classification}の組み合わせで表される．
+
+
+
+\newpage
 \section{$E_8$ lattice}
 
-\begin{defi}
+\begin{definition}
   \label{defi:E8Lattice}
   \lean{E8Lattice}
   \leanok
   \uses{defi:IntegralLattice}
   $E_8$格子とは，integralLatticeであって，even unimodularかつランクが$8$であるもののことである．
-\end{defi}
+\end{definition}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:unique}
   \lean{E8Lattice.unique}
   \leanok
   2つの$E_8$格子$\Lambda_1,\ \Lambda_2$は同型である．
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   sorry.
 \end{proof}
 
-\begin{defi}
+\begin{definition}
   \label{defi:M0-M7}
   \lean{E8Lattice.M0}
   \leanok
@@ -445,14 +814,14 @@ simple root systemは必ず存在し，しかも一意である：
       0 & 0 & 0 & 0 & 0 & 0 & 0 & 1/2
     \end{pmatrix}.
   \end{gather}
-\end{defi}
+\end{definition}
 
-\begin{lem}
+\begin{lemma}
   \label{lem:M7_upperTrianglar}
   \lean{E8Lattice.M7_upperTrianglar}
   \leanok
   $M_7$は上三角である．
-\end{lem}
+\end{lemma}
 
 \begin{proof}
   \leanok
@@ -460,12 +829,12 @@ simple root systemは必ず存在し，しかも一意である：
   略．
 \end{proof}
 
-\begin{lem}
+\begin{lemma}
   \label{lem:M7_det}
   \lean{E8Lattice.M7_det}
   \leanok
   $\det M_7 = 1$である．
-\end{lem}
+\end{lemma}
 
 \begin{proof}
   \leanok
@@ -478,12 +847,12 @@ simple root systemは必ず存在し，しかも一意である：
   \end{equation}
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:E8_det}
   \lean{E8Lattice.E8_det}
   \leanok
   $E_8$のCartan行列の行列式は$1$である．
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \uses{defi:M0-M7, lem:M7_det}
@@ -498,7 +867,7 @@ simple root systemは必ず存在し，しかも一意である：
   \end{equation}
 \end{proof}
 
-\begin{defi}
+\begin{definition}
   \label{defi:B}
   \lean{E8Lattice.B}
   \leanok
@@ -506,9 +875,9 @@ simple root systemは必ず存在し，しかも一意である：
   \begin{equation}
     B(x, y) := \transpose{x} C y = \inner{x}{Cy} \qquad (\forall x, y \in \Z^8).
   \end{equation}
-\end{defi}
+\end{definition}
 
-\begin{lem}
+\begin{lemma}
   \label{lem:inner_self_calc}
   \lean{E8Lattice.inner_self_calc}
   \leanok
@@ -519,7 +888,7 @@ simple root systemは必ず存在し，しかも一意である：
       &- (x_0 x_2 + x_1 x_3 + x_2 x_3 + x_3 x_4 + x_4 x_5 + x_5 x_6 + x_6 x_7))
     \end{split}
   \end{equation}
-\end{lem}
+\end{lemma}
 
 \begin{proof}
   \leanok
@@ -532,7 +901,7 @@ simple root systemは必ず存在し，しかも一意である：
   \end{equation}
 \end{proof}
 
-\begin{lem}
+\begin{lemma}
   \label{lem:inner_self_comp_sq}
   \lean{E8Lattice.inner_self_comp_sq}
   \leanok
@@ -544,7 +913,7 @@ simple root systemは必ず存在し，しかも一意である：
       & + \left( \sqrt{\frac{2}{3}} \, x_6 - \sqrt{\frac{3}{2}} \, x_7 \right)^2 + \frac{1}{2} \, x_7^2
     \end{split}
   \end{equation}
-\end{lem}
+\end{lemma}
 
 \begin{proof}
   \leanok
@@ -552,12 +921,12 @@ simple root systemは必ず存在し，しかも一意である：
   左辺に補題~\ref{lem:inner_self_calc}を代入して計算すれば得られる．
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:add_inner}
   \lean{E8Lattice.AddInner}
   \leanok
   $\forall x, y, z \in \Z^8,\ B(x+y, z) = B(x, z) + B(y, z)$.
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
@@ -565,12 +934,12 @@ simple root systemは必ず存在し，しかも一意である：
   計算するだけ．
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:inner_sym}
   \lean{E8Lattice.InnerSym}
   \leanok
   $\forall x, y \in \Z^8,\ B(x, y) = B(y, x)$.
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
@@ -578,12 +947,12 @@ simple root systemは必ず存在し，しかも一意である：
   計算するだけ．
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:inner_self}
   \lean{E8Lattice.InnerSelf}
   \leanok
   $\forall x \in \Z^8,\ B(x, x) \ge 0$.
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
@@ -591,12 +960,12 @@ simple root systemは必ず存在し，しかも一意である：
   補題~\ref{lem:inner_self_comp_sq}より，$B(x, x)$は平方の和で表せるから成り立つ．
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:inner_self_eq_zero}
   \lean{E8Lattice.InnerSelfEqZero}
   \leanok
   $\forall x \in \Z^8,\ B(x, x) = 0 \implies x = 0$.
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
@@ -607,12 +976,12 @@ simple root systemは必ず存在し，しかも一意である：
   これを繰り返すと，$x_0 = \cdots = x_7 = 0$を得る．
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:even}
   \lean{E8Lattice.InnerEven}
   \leanok
   $\forall x \in \Z^8,\ 2 \mid \inner{x}{x}_{\Z}$.
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   \leanok
@@ -620,42 +989,42 @@ simple root systemは必ず存在し，しかも一意である：
   補題~\ref{lem:inner_self_calc}より従う．
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:unimodular}
   %\lean{E8Lattice.unimodular}
   \leanok
   $E_8$格子はunimodularである．
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   sorry.
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   \label{thm:exists_E8}
   \lean{E8Lattice.exists_E8}
   \leanok
   $E_8$格子は存在する．
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   sorry.
 \end{proof}
 
-\begin{thm}
+\begin{theorem}
   $E_8$格子$\Lambda$に対し，$\forall n \in \N,\ \#\set{x \in \Lambda}{B(x, x) = n} < \infty$.
-\end{thm}
+\end{theorem}
 
 \begin{proof}
   sorry.
 \end{proof}
 
-\begin{lem}
+\begin{lemma}
   \label{lem:card_norm_2}
   \lean{E8Lattice.card_norm_2}
   \leanok
   $E_8$格子$\Lambda$に対し，$\#\set{x \in \Lambda}{B(x, x) = 2} = 240$.
-\end{lem}
+\end{lemma}
 
 \begin{proof}
   sorry.

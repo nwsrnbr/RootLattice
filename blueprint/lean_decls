@@ -1,4 +1,3 @@
-LinearIsometryEquiv
 Submodule.orthogonalProjection
 Submodule.orthogonalProjection_singleton
 Submodule.reflection
@@ -6,6 +5,7 @@ Submodule.reflection_singleton_apply
 Submodule.reflection_eq_self_iff
 Submodule.reflection_map_apply
 Submodule.reflection_mem_subspace_orthogonalComplement_eq_neg
+FiniteReflectionGroup
 E8Lattice
 E8Lattice.unique
 E8Lattice.M0
