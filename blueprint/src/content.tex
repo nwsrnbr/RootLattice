@@ -7,158 +7,124 @@
 % can start with a \section or \chapter for instance.
 
 \section{Reflections}
-以下，$\Bbbk$を$\R$または$\C$とし(Leanでは$\mathtt{RCLike}$)，$E$を$\Bbbk$-内積空間，$K$を$E$の$\Bbbk$-部分加群とする．
+以下，$R$をcommutative ring, $M$を$R$-moduleとする．
+$x \in M$とし，$f$を$M$のdual moduleの元，すなわち$f \in \Hom_R(M, R)$とする．
 
 \begin{definition}
-  \label{defi:orthogonalProjection}
-  \lean{Submodule.orthogonalProjection}
+  \label{defi:Module.reflection}
+  \lean{Module.reflection}
   \leanok
-  $\forall v \in E,\ \exists w \in K \st v - w \in K^\perp$とする．
-  線型連続写像$\proj_K : \map{E}{K}; \proj_K(v) = w$を\textbf{正射影(projection)}という．
-  すなわち，$V = \proj_K(v) + (v - \proj_K(v)) \in K \oplus K^\perp$と書ける．
-\end{definition}
-
-\begin{theorem}
-  \label{thm:orthogonalProjection_singleton}
-  \lean{Submodule.orthogonalProjection_singleton}
-  \leanok
-  任意の$v, w \in E$に対して次が成り立つ：
+  $f(x) = 2$を満たすとき，次の線形写像$s_x : \map{M}{M}$を\textbf{reflection}という：
   \begin{equation}
-    \proj_{\Bbbk v}(w) = \frac{\inner{v}{w}}{\norm{v}^2} v.
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  \leanok
-  略．
-\end{proof}
-
-\begin{definition}
-  \label{defi:reflection}
-  \lean{Submodule.reflection}
-  \leanok
-  次の直交変換を\textbf{reflection}という：
-  \begin{equation}
-    s_K : \map{E}{E};\ x \mapsto 2 \cdot \proj_K(x) - x.
+    y \mapsto y - f(y) x.
   \end{equation}
 \end{definition}
 
-\begin{proof}
+\begin{lemma}
+  \label{lem:Module.reflection_apply_self}
+  \lean{Module.reflection_apply_self}
   \leanok
-  略．
-\end{proof}
-
-\begin{theorem}
-  \label{thm:reflection_singleton_apply}
-  \lean{Submodule.reflection_singleton_apply}
-  \leanok
-  任意の$u, v \in E$に対し，次が成り立つ：
+  $f(x) = 2$を満たすとき，次が成り立つ：
   \begin{equation}
-    s_{\Bbbk u}(v) = 2 \frac{\inner{u}{v}}{\norm{u}^2}u - v.
+    s_x(x) = -x.
   \end{equation}
-\end{theorem}
+\end{lemma}
 
-\begin{proof}
+\begin{lemma}
+  \label{lem:Module.involutive_reflection}
+  \lean{Module.involutive_reflection}
   \leanok
-  \uses{thm:orthogonalProjection_singleton}
-  略．
-\end{proof}
-
-\begin{remark}
-  以前，$u$に関するreflectionは
+  $f(x) = 2$を満たすとき，次が成り立つ：
   \begin{equation}
-    s_u (v) = v - 2\frac{\inner{u}{v}}{\inner{u}{u}} u
+    s_x \circ s_x = \id_M.
   \end{equation}
-  と表せることを見た．
-  定理~\ref{thm:reflection_singleton_apply}からわかるように，$s_{\Bbbk \alpha}$は$s_\alpha$と逆向きである．
-\end{remark}
+\end{lemma}
 
-\begin{theorem}
-  \label{thm:reflection_eq_self_iff}
-  \lean{Submodule.reflection_eq_self_iff}
+\begin{lemma}
+  \label{lem:Module.reflection_inv}
+  \lean{Module.reflection_inv}
   \leanok
-  任意の$x \in E$に対して次が成り立つ：
+  $f(x) = 2$を満たすとき，次が成り立つ：
   \begin{equation}
-    s_K(x) = x \iff x \in K.
+    s_x^{-1} = s_x.
   \end{equation}
-\end{theorem}
-
-\begin{proof}
-  \leanok
-  略．
-\end{proof}
-
-\begin{theorem}
-  \label{thm:reflection_map_apply}
-  \lean{Submodule.reflection_map_apply}
-  \leanok
-  $E'$を$\Bbbk $-内積空間，$f : \map{E}{E'}$を線形同型な等長写像(すなわち，$\norm{f(x)} = \norm{x}$)とする．
-  このとき，任意の$x \in E'$に対して次が成り立つ：
-  \begin{equation}
-    s_{f(K)}(x) = f(s_K(f^{-1}(x))).
-  \end{equation}
-\end{theorem}
-
-\begin{proof}
-  \leanok
-  略．
-\end{proof}
-
-\begin{theorem}
-  \label{thm:reflection_mem_subspace_orthogonalComplement_eq_neg}
-  \lean{Submodule.reflection_mem_subspace_orthogonalComplement_eq_neg}
-  \leanok
-  任意の$v \in E$に対し，$v \in K^\perp$なら$s_K(v) = -v$である．
-\end{theorem}
-
-\begin{proof}
-  \leanok
-  略．
-\end{proof}
+\end{lemma}
 
 \section{Reflection groupsとroot systems}
+第1節と同様に，$R$をcommutative ring, $M$を$R$-moduleとする．
+さらに，$\iota$を(有限とは限らない)添え字集合，$N$を$R$-moduleとする．
+
 \begin{definition}
   \label{defi:FiniteReflectionGroup}
   \lean{FiniteReflectionGroup}
   \leanok
-  群$W$が次を満たすとき，$W$を\textbf{finite reflection group}という：
+  自己同型群$\Aut(M)$の部分群$W$が次を満たすとき，$W$を\textbf{finite reflection group}という：
   \begin{enumerate}[label=(\roman*)]
     \item $W$はfinite group,
-    \item $W$はreflectionsで生成される，すなわち
-    \begin{equation}
-      \forall w \in W,\ \exists s_{\alpha_1}, \ldots, s_{\alpha_r} \in W \textrm{: reflections} \st w = s_{\alpha_1} \cdots s_{\alpha_r}.
-    \end{equation}
+    \item $\forall i \in \iota,\ v_i \in M,\ \exists f_i \in \Hom_R(M, R) \st f(v_i) = 2$,
+    \item $W = \langle s_{v_i} \mid i \in \iota \rangle$.
   \end{enumerate}
 \end{definition}
 
 \begin{definition}
+  \label{defi:essFRG}
+  \lean{essFRG}
+  \leanok
   finite reflection group $W$が次を満たすとき，$W$は\textbf{essential}であるという：
   \begin{equation}
-    \Fix(W) := \set{\lambda \in V}{\forall w \in W,\ w(\lambda) = \lambda} = \{0\}.
+    \Fix(W) := \set{v \in M}{\forall w \in W,\ w(v) = v} = \{0\}.
   \end{equation}
 \end{definition}
 
 \begin{remark}
-  $W$がessentialでないとき，$V = \Fix(W) \oplus \Fix(W)^\perp$である．
+  $W$がessentialでないとき，$E = \Fix(W) \oplus \Fix(W)^\perp $である．
   また，部分空間$\Fix(W)^\perp$上では$W$はessentialである．
 \end{remark}
 
 \begin{definition}
-  空でない$V$の有限部分集合$\Phi$が次を満たすとき，$\Phi$を\textbf{root system}という：
+  \label{defi:RootPairing}
+  \lean{RootPairing}
+  \leanok
+  $M, N$は$R$上のperfect pairingとする．
+  すなわち，bilinear map $B : \map{M \times N}{R}$が与えられていて，片方の変数を固定して単にlinear mapと見たとき，それぞれがbijectiveであるとする．
+  このとき，$\Phi := \set{\alpha_i \in M}{i \in \iota},\ \Phi^\vee := \set{\alpha^\vee_i \in N}{i \in \iota}$が次を満たすとき，$(\Phi, \Phi^\vee)$を\textbf{root system}という：
   \begin{enumerate}[label=(\roman*)]
-    \item $\Phi$は$V$を生成する, \label{defi:root_gen}
-    \item $\forall \alpha \in \Phi,\ \R \alpha \cap \Phi = \{\pm \alpha\}$, \label{defi:root_self}
-    \item $\forall \alpha, \beta \in \Phi,\ s_\beta(\alpha) \in \Phi$. \label{defi:root_ref_closed}
+    \item $\forall i,\ B(\alpha_i, \alpha^\vee_i) = 2$ \label{defi:RootPairing_EqTwo}
+    \item $\forall i j,\ \exists k,\ \alpha_j - B(\alpha_j, \alpha^\vee_i) \alpha_i = \alpha_k$
+    \item $\forall i j,\ \exists k,\ \alpha^\vee_j - B(\alpha_i, \alpha^\vee_j) \alpha^\vee_i = \alpha^\vee_k$
   \end{enumerate}
-  また，$\Phi$の元を\textbf{root vector}，または単に\textbf{root}という．
 \end{definition}
 
 \begin{definition}
-  root system $\Phi$が次を満たすとき，\textbf{crystallographic}であるという：
+  \label{defi:RootSystem}
+  \lean{RootSystem}
+  \leanok
+  定義~\ref{defi:RootPairing}の3条件に加え，以下の2条件を追加したものを\textbf{root system}という：
   \begin{enumerate}[label=(\roman*)]
     \setcounter{enumi}{3}
-    \item $\forall \alpha, \beta \in \Phi,\ 2 \dfrac{\inner{\alpha}{\beta}}{\inner{\alpha}{\alpha}} \in \Z$.
+    \item $\langle \Phi \rangle_R = M$
+    \item $\langle \Phi^\vee \rangle_R = N$
   \end{enumerate}
+  $\Phi$の元を\textbf{root}といい，$\Phi^\vee$の元を\textbf{coroot}という．
+\end{definition}
+
+\begin{definition}
+  \label{defi:RootPairing.IsCrystallographic}
+  \lean{RootPairing.IsCrystallographic}
+  \leanok
+  定義~\ref{defi:RootPairing}の3条件に加え，以下の1条件を追加したものを\textbf{crystallographic}であるという：
+  \begin{enumerate}[label=(\roman*)]
+    \setcounter{enumi}{3}
+    \item $\forall i, j,\ B(\alpha_i, \alpha^\vee_j) \in \Z$
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  \label{defi:RootPairing.reflection}
+  \lean{RootPairing.reflection}
+  \leanok
+  定義~\ref{defi:RootPairing}の条件~\ref{defi:RootPairing_EqTwo}より，定義~\ref{defi:Module.reflection}の$f$を$B(-, \alpha^\vee_i)$とすると$M$上のreflectionが得られる．
+  このreflectionを$s_i$と書く．
 \end{definition}
 
 finite reflection groupが与えられると，それに対応するroot systemが存在する：
@@ -207,7 +173,7 @@ finite reflection groupが与えられると，それに対応するroot system�
     V
     = \Fix(W)^\perp
     = \left( \bigcap_{\alpha \in \Phi} H_\alpha \right)^\perp
-    = \sum_{\alpha \in \Phi} H_\alpha^\perp
+    = \sum_{\alpha \in \Phi} H_\alpha^\vee
     = \sum_{\alpha \in \Phi} \R\alpha
   \end{equation}
   であるから$\Phi$は$V$を生成する．
@@ -222,8 +188,11 @@ finite reflection groupが与えられると，それに対応するroot system�
 
 逆に，root systemが与えられると，それに対応するfinite reflection groupが存在する：
 \begin{proposition}
-  $\Phi \subseteq V$をroot systemとする．
-  このとき，$\set{s_\alpha}{\alpha \in \Phi}$が生成する群$W_\Phi$はessential finite reflection groupである．
+  \label{prop:FiniteReflectionGroup.RootSystem_to_essFRG}
+  \lean{FiniteReflectionGroup.RootSystem_to_essFRG}
+  %\leanok
+  $P$をroot systemとする．
+  このとき，$\set{s_i}{i \in \iota}$が生成する群$W_\Phi$はessential finite reflection groupである．
 \end{proposition}
 \begin{proof}
   命題~\ref{prop:frg_to_root}の証明中\ref{defi:root_gen}で，$\Phi = \{\alpha_1 \ldots, \alpha_r\}$とし，$W$を$W_\Phi$と読み替えれば$\Fix(W_\Phi) = \bigcap_{\alpha \in \Phi} H_\alpha$が成り立つ．
@@ -1028,4 +997,115 @@ Coxeter matrixの定義から分かるように，Coxeter matrixとCoxeter-Dynki
 
 \begin{proof}
   sorry.
+\end{proof}
+
+\section{旧reflections}
+
+以下，$\Bbbk$を$\R$または$\C$とし(Leanでは$\mathtt{RCLike}$)，$E$を$\Bbbk$-内積空間，$K$を$E$の$\Bbbk$-部分加群とする．
+
+\begin{definition}
+  \label{defi:orthogonalProjection}
+  \lean{Submodule.orthogonalProjection}
+  \leanok
+  $\forall v \in E,\ \exists w \in K \st v - w \in K^\perp$とする．
+  線型連続写像$\proj_K : \map{E}{K}; \proj_K(v) = w$を\textbf{正射影(projection)}という．
+  すなわち，$V = \proj_K(v) + (v - \proj_K(v)) \in K \oplus K^\perp$と書ける．
+\end{definition}
+
+\begin{theorem}
+  \label{thm:orthogonalProjection_singleton}
+  \lean{Submodule.orthogonalProjection_singleton}
+  \leanok
+  任意の$v, w \in E$に対して次が成り立つ：
+  \begin{equation}
+    \proj_{\Bbbk v}(w) = \frac{\inner{v}{w}}{\norm{v}^2} v.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{definition}
+  \label{defi:reflection}
+  \lean{Submodule.reflection}
+  \leanok
+  次の直交変換を\textbf{reflection}という：
+  \begin{equation}
+    s_K : \map{E}{E};\ x \mapsto 2 \cdot \proj_K(x) - x.
+  \end{equation}
+\end{definition}
+
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{theorem}
+  \label{thm:reflection_singleton_apply}
+  \lean{Submodule.reflection_singleton_apply}
+  \leanok
+  任意の$u, v \in E$に対し，次が成り立つ：
+  \begin{equation}
+    s_{\Bbbk u}(v) = 2 \frac{\inner{u}{v}}{\norm{u}^2}u - v.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:orthogonalProjection_singleton}
+  略．
+\end{proof}
+
+\begin{remark}
+  以前，$u$に関するreflectionは
+  \begin{equation}
+    s_u (v) = v - 2\frac{\inner{u}{v}}{\inner{u}{u}} u
+  \end{equation}
+  と表せることを見た．
+  定理~\ref{thm:reflection_singleton_apply}からわかるように，$s_{\Bbbk u}$は$s_u$と逆向きである．
+\end{remark}
+
+\begin{theorem}
+  \label{thm:reflection_eq_self_iff}
+  \lean{Submodule.reflection_eq_self_iff}
+  \leanok
+  任意の$x \in E$に対して次が成り立つ：
+  \begin{equation}
+    s_K(x) = x \iff x \in K.
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{theorem}
+  \label{thm:reflection_map_apply}
+  \lean{Submodule.reflection_map_apply}
+  \leanok
+  $E'$を$\Bbbk $-内積空間，$f : \map{E}{E'}$を線形同型な等長写像(すなわち，$\norm{f(x)} = \norm{x}$)とする．
+  このとき，任意の$x \in E'$に対して次が成り立つ：
+  \begin{equation}
+    s_{f(K)}(x) = f(s_K(f^{-1}(x))).
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  略．
+\end{proof}
+
+\begin{theorem}
+  \label{thm:reflection_mem_subspace_orthogonalComplement_eq_neg}
+  \lean{Submodule.reflection_mem_subspace_orthogonalComplement_eq_neg}
+  \leanok
+  任意の$v \in E$に対し，$v \in K^\perp$なら$s_K(v) = -v$である．
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  略．
 \end{proof}
