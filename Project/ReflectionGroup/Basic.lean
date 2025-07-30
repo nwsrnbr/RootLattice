@@ -14,8 +14,8 @@ variable (ι R M N : Type*) [CommRing R] [AddCommGroup M] [Module R M] [AddCommG
 structure FiniteReflectionGroup where
   W : Subgroup (M ≃ₗ[R] M)
   isFinite : Finite W
-  v : ι ↪ M
-  eq_two : ∀ i, ∃ f : Module.Dual R M, f (v i) = 2
+  α : ι ↪ M
+  eq_two : ∀ i, ∃ f : Module.Dual R M, f (α i) = 2
   gen_set : Set (M ≃ₗ[R] M) := Set.range fun i ↦ Module.reflection (eq_two i).choose_spec
   gen_ref : W = Subgroup.closure gen_set
 
@@ -25,10 +25,22 @@ structure essFRG extends FiniteReflectionGroup ι R M where
 namespace FiniteReflectionGroup
 variable (P : RootPairing ι R M N)
 
+/-
+def essFRG_to_RootSystem (W : essFRG ι R M) (W' : essFRG ι R M) : RootSystem ι R M M where
+  toFun := by
+    rcases W.eq_two with f
+  root := W.v
+  coroot := W'.v
+  root_coroot_two := by
+    intro i
+    rcases W.eq_two i with ⟨f, hf⟩
+    simp
+-/
+
 def RootSystem_to_essFRG (P : RootSystem ι R M N) : essFRG ι R M where
   W := Subgroup.closure (Set.range fun i ↦ P.reflection i)
   isFinite := by sorry
-  v := P.root
+  α := P.root
   eq_two := by
     intro i
     use (P.flip.toLinearMap (P.coroot i))

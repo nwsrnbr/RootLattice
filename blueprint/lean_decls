@@ -6,9 +6,13 @@ FiniteReflectionGroup
 essFRG
 RootPairing
 RootSystem
+RootPairing.IsReduced
 RootPairing.IsCrystallographic
 RootPairing.reflection
 FiniteReflectionGroup.RootSystem_to_essFRG
+RootPairing.coxeterWeightIn
+RootPairing.coxeterWeightIn_mem_set_of_isCrystallographic
+RootPairing.Base.cartanMatrixIn
 E8Lattice
 E8Lattice.unique
 E8Lattice.M0

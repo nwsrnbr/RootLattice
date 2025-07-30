@@ -6,6 +6,202 @@
 % the current file can be a simple sequence of \input. Otherwise It
 % can start with a \section or \chapter for instance.
 
+\setcounter{section}{-1}
+\section{数学的な話}
+数学的な文脈での流れや形式化に向けた準備をする．
+\subsection{Reflections}
+$V$を$\R^n$のsubspaceとし，$\alpha, \beta \in V$の標準内積を$\inner{\alpha}{\beta}$と書き，$\alpha$のノルムを$\norm{\alpha} = \sqrt{\inner{\alpha}{\alpha}}$と書く．
+
+\begin{definition}
+  $f : \map{V}{V}$を線型写像とする．
+  このとき，$f$が\textbf{直交変換}であるとは，
+  \begin{equation}
+    \inner{f(\alpha)}{f(\beta)} = \inner{\alpha}{\beta}
+  \end{equation}
+  が成り立つことである．
+  また，$V$上の直交変換全体の集合を$O(V)$と書く．
+\end{definition}
+
+\begin{definition}
+  $\alpha \in V \setminus \{0\}$とする．このとき，
+  \begin{equation}
+    H_\alpha := \set{\lambda \in V}{\inner{\alpha}{\lambda} = 0} = (\R \alpha)^{\perp}
+  \end{equation}
+  を$\alpha$に垂直な\textbf{hyperplane}という．
+\end{definition}
+
+\begin{definition}
+  線型写像$s_\alpha : \map{V}{V}$が次を満たすとき，$s_\alpha$を$\alpha$に関する\textbf{reflection}といい，$\alpha$に垂直なhyperplane $H_\alpha$を$s_\alpha$の\textbf{reflecting hyperplane}という：
+  \begin{enumerate}[label=(\roman*)]
+    \item $s_\alpha (\alpha) = -\alpha$, \label{def:ref_self}
+    \item $\lambda \in H_\alpha \implies s_\alpha(\lambda) = \lambda$. \label{def:ref_orthogonal}
+  \end{enumerate}
+\end{definition}
+
+\begin{remark}
+  \ref{def:ref_self}, \ref{def:ref_orthogonal}で$s_\alpha$は定まる．
+\end{remark}
+\begin{proof}
+  $\norm{\alpha} = 1$としてよい．
+  $\{\alpha, \lambda_1, \ldots, \lambda_m\}$を$V$の正規直交基底とする．
+  特に，$\lambda_1, \ldots, \lambda_m \in H_\alpha$である．
+  \ref{def:ref_self}, \ref{def:ref_orthogonal}より，これらの行き先はすべて定まるから，$s_\alpha$は定まる．
+\end{proof}
+
+\begin{proposition}
+  reflectionは次のように表せる：
+  \begin{equation}
+    s_\alpha (\lambda) = \lambda - 2\frac{\inner{\alpha}{\lambda}}{\inner{\alpha}{\alpha}} \alpha.
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  \ref{def:ref_self}を確かめる：
+  \begin{equation}
+    \alpha - 2 \frac{\inner{\alpha}{\alpha}}{\inner{\alpha}{\alpha}} \alpha
+    = \alpha - 2\alpha
+    = -\alpha.
+  \end{equation}
+  \ref{def:ref_orthogonal}を確かめる．$\lambda \in H_\alpha$とすると，$\inner{\alpha}{\lambda} = 0$であるから，
+  \begin{equation}
+    \lambda - 2\frac{\inner{\alpha}{\lambda}}{\inner{\alpha}{\alpha}} \alpha
+    = \lambda - 2 \cdot 0 \cdot \alpha
+    = \lambda.
+  \end{equation}
+\end{proof}
+
+\begin{proposition}
+  $s_\alpha$は$V$の直交変換，すなわち$s_\alpha \in O(V)$である．
+\end{proposition}
+
+\begin{proof}
+  $\lambda, \mu \in V$とし，$\lambda = c_\lambda \alpha + \beta_\lambda,\ \mu = c_\mu \alpha + \beta_\mu$とする($\beta_\lambda, \beta_\mu \in H_\alpha$)．
+  このとき，
+  \begin{align}
+    \inner{s_\alpha(\lambda)}{s_\alpha(\mu)}
+    &= \inner{s_\alpha(c_\lambda \alpha + \beta_\lambda)}{s_\alpha(c_\mu \alpha + \beta_\mu)}\\
+    &= \inner{-c_\lambda \alpha + \beta_\lambda}{-c_\mu \alpha + \beta_\mu}\\
+    &= c_\lambda c_\mu \inner{\alpha}{\alpha} - c_\lambda \inner{\alpha}{\beta_\mu} - c_\mu \inner{\beta_\lambda}{\alpha} + \inner{\beta_\lambda}{\beta_\mu}\\
+    &= c_\lambda c_\mu \inner{\alpha}{\alpha} + \inner{\beta_\lambda}{\beta_\mu}.
+  \end{align}
+  一方，
+  \begin{align}
+    \inner{\lambda}{\mu}
+    &= \inner{c_\lambda \alpha + \beta_\lambda}{c_\mu \alpha + \beta_\mu}\\
+    &= c_\lambda c_\mu \inner{\alpha}{\alpha} + c_\lambda \inner{\alpha}{\beta_\mu} + c_\mu \inner{\alpha}{\beta_\lambda} + \inner{\beta_\lambda}{\beta_\mu}\\
+    &= c_\lambda c_\mu \inner{\alpha}{\alpha} + \inner{\beta_\lambda}{\beta_\mu}.
+  \end{align}
+  よって，$\inner{s_\alpha(\lambda)}{s_\alpha(\mu)} = \inner{\lambda}{\mu}$が成り立つから，$s_\alpha \in O(V)$がわかった．
+\end{proof}
+
+\begin{lemma} \label{lem:orth_ref_orthinv}
+  \label{lem:ref_inner_hold2}
+  $t \in O(V)$とする．このとき，$t s_\alpha t^{-1} = s_{t(\alpha)}$が成り立つ．
+\end{lemma}
+
+\begin{proof}
+  \ref{def:ref_self}を確かめる：
+  \begin{equation}
+    (t s_\alpha t^{-1})(t(\alpha))
+    = (t s_\alpha)(\alpha)
+    = t(-\alpha)
+    = -t(\alpha).
+  \end{equation}
+  \ref{def:ref_orthogonal}を確かめる．
+  $\lambda \in H_{t(\alpha)}$とすると，$0 = \inner{\lambda}{t(\alpha)} = \inner{t^{-1}(\lambda)}{\alpha}$ i.e., $t^{-1}(\lambda) \in H_\alpha$であるから，
+  \begin{equation}
+    (t s_\alpha t^{-1})(\lambda)
+    = t (s_\alpha(t^{-1}(\lambda)))
+    = t(t^{-1}(\lambda))
+    = \lambda.
+  \end{equation}
+\end{proof}
+
+\subsection{Reflection groupsとroot systems}
+\begin{definition}
+  $O(V)$の部分群$W$が次を満たすとき，$W$を\textbf{finite reflection group}という：
+  \begin{enumerate}[label=(\roman*)]
+    \item $W$はfinite group,
+    \item $W$はreflectionsで生成される，すなわち
+    \begin{equation}
+      \forall w \in W,\ \exists s_{\alpha_1}, \ldots, s_{\alpha_r} \in W \textrm{: reflections} \st w = s_{\alpha_1} \cdots s_{\alpha_r}.
+    \end{equation}
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  finite reflection group $W$が次を満たすとき，$W$は\textbf{essential}であるという：
+  \begin{equation}
+    \Fix(W) := \set{\lambda \in V}{\forall w \in W,\ w(\lambda) = \lambda} = \{0\}.
+  \end{equation}
+\end{definition}
+
+\begin{proposition}
+  \label{prop:fix_direct_sum}
+  $V = \Fix(W) \oplus \Fix(W)^\perp$が成り立つ．
+  $V$は有限次元でなくても良い．
+\end{proposition}
+
+\begin{proof}
+  一般に，Hilbert空間(完備内積空間)$H$に対し，$A$が閉部分空間なら$H = A \oplus A^\perp$である．
+  よって，$\Fix(W)$が閉部分空間であることを示せば十分である．
+
+  $f = w - \id_M$とする．
+  \begin{equation}
+    \Fix(W) = \Ker f = f^{-1}(\{0\})
+  \end{equation}
+  である．
+  $w$は連続である($w$はノルムを保つから$\delta = \varepsilon$とすればよい)から，$f$も連続である．
+  1点集合$\{0\}$は閉であるから，$f^{-1}(\{0\})$も閉である．
+
+  また，核は部分空間である．
+\end{proof}
+
+\begin{definition}
+  空でない$V$の有限部分集合$\Phi$が次を満たすとき，$\Phi$を\textbf{root system}という：
+  \begin{enumerate}[label=(\roman*)]
+    \item $\Phi$は$V$を生成する, \label{defi:root_gen}
+    \item $\forall \alpha \in \Phi,\ \R \alpha \cap \Phi = \{\pm \alpha\}$, \label{defi:root_self}
+    \item $\forall \alpha, \beta \in \Phi,\ s_\beta(\alpha) \in \Phi$. \label{defi:root_ref_closed}
+  \end{enumerate}
+  また，$\Phi$の元を\textbf{root vector}，または単に\textbf{root}という．
+\end{definition}
+
+\begin{definition}
+  root system $\Phi$が次を満たすとき，\textbf{crystallographic}であるという：
+  \begin{enumerate}[label=(\roman*)]
+    \setcounter{enumi}{3}
+    \item $\forall \alpha, \beta \in \Phi,\ 2 \dfrac{\inner{\alpha}{\beta}}{\inner{\alpha}{\alpha}} \in \Z$.
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  $\Phi$がroot systemであるとき，$\alpha$の\textbf{coroot}を次で定義する：
+  \begin{equation}
+    \alpha^\vee := \frac{2}{\inner{\alpha}{\alpha}} \alpha.
+  \end{equation}
+\end{definition}
+
+\begin{proposition}
+  corootに対し，以下が成り立つ：
+  \begin{enumerate}[label=(\arabic*)]
+    \item coroot system $\Phi^\vee := \set{\alpha^\vee}{\alpha \in \Phi}$も$V$のroot systemである．
+    \item 任意の$\lambda \in V$に対し，$\inner{\alpha^\vee}{\lambda} = 2 \dfrac{\inner{\alpha}{\lambda}}{\inner{\alpha}{\alpha}}$であり，$s_\alpha(\lambda) = \lambda - \inner{\alpha^\vee}{\lambda}\alpha$と表せる．
+  \end{enumerate}
+\end{proposition}
+
+finite reflection groupが与えられると，それに対応するroot systemが存在する：
+\begin{proposition}
+  $W$をessential finite reflection groupとする．
+  このとき，$\Phi := \set{\alpha \in V}{\norm{\alpha} = 1,\ s_\alpha \in W}$はroot systemである．
+\end{proposition}
+
+逆に，root systemが与えられると，それに対応するfinite reflection groupが存在する：
+\begin{proposition}
+  $\Phi \subseteq V$をroot systemとする．
+  このとき，$\set{s_\alpha}{\alpha \in \Phi}$が生成する群$W_\Phi$はessential finite reflection groupである．
+\end{proposition}
+
 \section{Reflections}
 以下，$R$をcommutative ring, $M$を$R$-moduleとする．
 $x \in M$とし，$f$を$M$のdual moduleの元，すなわち$f \in \Hom_R(M, R)$とする．
@@ -77,8 +273,9 @@ $x \in M$とし，$f$を$M$のdual moduleの元，すなわち$f \in \Hom_R(M, R
 \end{definition}
 
 \begin{remark}
-  $W$がessentialでないとき，$E = \Fix(W) \oplus \Fix(W)^\perp $である．
-  また，部分空間$\Fix(W)^\perp$上では$W$はessentialである．
+  $M$が(有限次元とは限らない)実ベクトル空間の場合，$M = \Fix(W) \oplus \Fix(W)^\perp$が成り立つ(命題~\ref{prop:fix_direct_sum})．
+  しかし，一般の場合はそうとは限らない．
+  reflectionの性質から$x \perp y \iff s_x(y) = y \iff f(y) = 0$と定義しようと思ったが，どうもうまく行かなそう．
 \end{remark}
 
 \begin{definition}
@@ -87,7 +284,7 @@ $x \in M$とし，$f$を$M$のdual moduleの元，すなわち$f \in \Hom_R(M, R
   \leanok
   $M, N$は$R$上のperfect pairingとする．
   すなわち，bilinear map $B : \map{M \times N}{R}$が与えられていて，片方の変数を固定して単にlinear mapと見たとき，それぞれがbijectiveであるとする．
-  このとき，$\Phi := \set{\alpha_i \in M}{i \in \iota},\ \Phi^\vee := \set{\alpha^\vee_i \in N}{i \in \iota}$が次を満たすとき，$(\Phi, \Phi^\vee)$を\textbf{root system}という：
+  このとき，$\Phi := \set{\alpha_i \in M}{i \in \iota},\ \Phi^\vee := \set{\alpha^\vee_i \in N}{i \in \iota}$が次を満たすとき，$(\Phi, \Phi^\vee)$を\textbf{root pairing}という：
   \begin{enumerate}[label=(\roman*)]
     \item $\forall i,\ B(\alpha_i, \alpha^\vee_i) = 2$ \label{defi:RootPairing_EqTwo}
     \item $\forall i j,\ \exists k,\ \alpha_j - B(\alpha_j, \alpha^\vee_i) \alpha_i = \alpha_k$
@@ -109,14 +306,19 @@ $x \in M$とし，$f$を$M$のdual moduleの元，すなわち$f \in \Hom_R(M, R
 \end{definition}
 
 \begin{definition}
+  \label{defi:RootPairing.IsReduced}
+  \lean{RootPairing.IsReduced}
+  \leanok
+  $P$をroot pairingとする．
+  線型独立でない2つのroots $\alpha_i, \alpha_j$に対し，$\alpha_i = \alpha_j$または$\alpha_i = -\alpha_j$のとき，$P$は\textbf{reduced}であるという．
+\end{definition}
+
+\begin{definition}
   \label{defi:RootPairing.IsCrystallographic}
   \lean{RootPairing.IsCrystallographic}
   \leanok
-  定義~\ref{defi:RootPairing}の3条件に加え，以下の1条件を追加したものを\textbf{crystallographic}であるという：
-  \begin{enumerate}[label=(\roman*)]
-    \setcounter{enumi}{3}
-    \item $\forall i, j,\ B(\alpha_i, \alpha^\vee_j) \in \Z$
-  \end{enumerate}
+  $P$をroot pairingとする．
+  $\forall i, j,\ B(\alpha_i, \alpha^\vee_j) \in \Z$のとき，$P$は\textbf{crystallographic}であるという．
 \end{definition}
 
 \begin{definition}
@@ -129,62 +331,12 @@ $x \in M$とし，$f$を$M$のdual moduleの元，すなわち$f \in \Hom_R(M, R
 
 finite reflection groupが与えられると，それに対応するroot systemが存在する：
 
-\begin{proposition} \label{prop:frg_to_root}
+\begin{proposition}
+  \label{prop:frg_to_root}
+  \notready
   $W$をessential finite reflection groupとする．
   このとき，$\Phi := \set{\alpha \in V}{\norm{\alpha} = 1,\ s_\alpha \in W}$はroot systemである．
 \end{proposition}
-\begin{proof}
-  \ref{defi:root_gen}を示すために，$\Fix (W) = \bigcap_{\alpha \in \Phi} H_\alpha$を示す：
-
-  $(\subseteq)$任意に$\lambda \in \Fix(W),\ \alpha \in \Phi$をとると，$s_\alpha \in W$であるから$s_\alpha(\lambda) = \lambda$である．
-  よって，
-  \begin{equation}
-    \inner{\alpha}{\lambda}
-    = \inner{\alpha}{s_\alpha(\lambda)}
-    = \inner{s_\alpha^{-1}(\alpha)}{\lambda}
-    = \inner{s_\alpha(\alpha)}{\lambda}
-    = \inner{-\alpha}{\lambda}
-    = -\inner{\alpha}{\lambda}.
-    \qquad \therefore \inner{\alpha}{\lambda} = 0.
-  \end{equation}
-  したがって，$\lambda \in H_\alpha$である．
-
-  $(\supseteq)$ $\lambda \in \bigcap_{\alpha \in \Phi} H_\alpha$とする．
-  任意に$w \in W$をとり，$w = s_{\alpha_1} \cdots s_{\alpha_r}$とreflectionsの積で書く．
-  ただし，$\norm{\alpha_1} = \cdots = \norm{\alpha_r} = 1$としておく．
-  すると，$\alpha_1, \ldots, \alpha_r \in \Phi$であるから，$\lambda \in H_{\alpha_i}$である．
-  よって，
-  \begin{equation}
-    w(\lambda)
-    = (s_{\alpha_1} \cdots s_{\alpha_{r-1}} s_{\alpha_r})(\lambda)
-    = (s_{\alpha_1} \cdots s_{\alpha_{r-1}})(\lambda)
-    = \cdots
-    = \lambda.
-  \end{equation}
-
-  よって，$W$はessentialだから，
-  \begin{equation}
-    \{0\}
-    = \Fix(W)
-    = \bigcap_{\alpha \in \Phi} H_\alpha.
-  \end{equation}
-  したがって，
-  \begin{equation}
-    V
-    = \Fix(W)^\perp
-    = \left( \bigcap_{\alpha \in \Phi} H_\alpha \right)^\perp
-    = \sum_{\alpha \in \Phi} H_\alpha^\vee
-    = \sum_{\alpha \in \Phi} \R\alpha
-  \end{equation}
-  であるから$\Phi$は$V$を生成する．
-
-  \ref{defi:root_self}は$\norm{\alpha} = 1$からわかる．
-
-  \ref{defi:root_ref_closed}を示す．
-  $\forall \alpha, \beta \in \Phi$に対し，$\norm{s_\beta(\alpha)} = \norm{\alpha} = 1$である．
-  また，補題~\ref{lem:orth_ref_orthinv}より，$s_{s_\beta(\alpha)} = s_\beta s_\alpha s_\beta^{-1} \in W$である．
-  よって，$s_\beta(\alpha) \in \Phi$が成り立つ．
-\end{proof}
 
 逆に，root systemが与えられると，それに対応するfinite reflection groupが存在する：
 \begin{proposition}
@@ -194,37 +346,13 @@ finite reflection groupが与えられると，それに対応するroot system�
   $P$をroot systemとする．
   このとき，$\set{s_i}{i \in \iota}$が生成する群$W_\Phi$はessential finite reflection groupである．
 \end{proposition}
-\begin{proof}
-  命題~\ref{prop:frg_to_root}の証明中\ref{defi:root_gen}で，$\Phi = \{\alpha_1 \ldots, \alpha_r\}$とし，$W$を$W_\Phi$と読み替えれば$\Fix(W_\Phi) = \bigcap_{\alpha \in \Phi} H_\alpha$が成り立つ．
-  よって，$\Phi$は$V$を生成するから$\Fix(W_\Phi)^\perp = \sum_{\alpha \in \Phi} \R\alpha = V$である．
-  したがって，$W_\Phi$はessentialである．
 
-  あとは$W_\Phi$が有限であることを示せば良い．
-  \ref{defi:root_ref_closed}より，$\forall \alpha \in \Phi,\ s_\alpha(\Phi) = \Phi$であるから$\forall w \in W,\ w(\Phi) = \Phi$である．
-  すなわち，$w$は$\Phi$上の置換とみなせる．
-  よって，
-  \begin{equation}
-    \begin{array}{rccc}
-    p:&W_\Phi & \longrightarrow & \operatorname{Perm}(\Phi) \\
-    &\rotatebox[origin=c]{90}{$\in$} & & \rotatebox[origin=c]{90}{$\in$} \\
-    &w & \longmapsto & (\alpha \mapsto w(\alpha))
-    \end{array}
-  \end{equation}
-  と定めると，これはgroup homである($\operatorname{Perm}(\Phi)$は$\Phi$の置換群)．
-  これが単射であることを示せば，$\abs{W_\Phi} \le \abs{\operatorname{Perm}(\Phi)} < \infty$が示せる．
-  \begin{align}
-    w \in \Ker p
-    &\iff \forall \alpha \in \Phi,\ w(\alpha) = \alpha\\
-    &\iff w = 1
-  \end{align}
-  であるから，$\Ker p = \{1\}$であり，単射であることが示せた．
-\end{proof}
-
+\section{Positive root systemsとsimple root systems}
 root systemはfinite reflection groupの生成系を与えているが，群の生成元の個数はできるだけ少なくしたい．
 そこで，root systemを``うまく''取る方法を考える．
 
-\section{Positive root systemsとsimple root systems}
 \begin{definition}
+  \notready
   $\Phi \subseteq V$をroot systemとし，$p \in V \setminus \{0\}$は$\forall \alpha \in \Phi,\ \inner{\alpha}{p} \ne 0$を満たすとする．
   このとき，$\Pi := \set{\alpha \in \Phi}{\inner{\alpha}{p} > 0}$を\textbf{positive root system}という．
 \end{definition}
@@ -234,6 +362,7 @@ root systemはfinite reflection groupの生成系を与えているが，群の�
 \end{remark}
 
 \begin{definition}
+  \notready
   $\Pi$をpositive root systemとする．
   $\Delta \subseteq \Pi$が次を満たすとき，$\Delta$を\textbf{simple root system}という：
   \begin{enumerate}[label=(\roman*)]
@@ -245,6 +374,7 @@ root systemはfinite reflection groupの生成系を与えているが，群の�
 simple root systemは必ず存在し，しかも一意である：
 
 \begin{fact}
+  \notready
   $\Phi$をroot system，$\Pi$をpositive root systemとする．
   \begin{enumerate}[label=(\arabic*)]
     \item $\exists! \Delta \subseteq \Phi$ : simple root system,
@@ -253,68 +383,29 @@ simple root systemは必ず存在し，しかも一意である：
 \end{fact}
 
 \section{Finite reflection groupsの分類}
-以下，essential finite reflection group $W$に対し，そのroot systemを$\Phi$，そのsimple root systemを$\Delta$とする．
-また，$\alpha, \beta \in \Delta$に対し，$m(\alpha, \beta)$を$s_\alpha s_\beta$の位数，$c(\beta, \alpha) = 2\dfrac{\inner{\beta}{\alpha}}{\inner{\alpha}{\alpha}}$とする．
-
-\begin{remark}
-  $s_\alpha^2 = 1$より$m(\alpha, \alpha) = 1$である．
-  また，$s_\beta s_\alpha = (s_\alpha s_\beta)^{-1}$より$m(\alpha, \beta) = m(\beta, \alpha)$である．
-\end{remark}
-
-
-\begin{lemma}
-  \label{lem:inner_order}
-  $\alpha \ne \beta \in \Delta$とする．このとき，次が成り立つ：
-  \begin{equation}
-    \inner{\alpha}{\beta}
-    = -\norm{\alpha} \norm{\beta} \cos\frac{\pi}{m(\alpha, \beta)}.
-  \end{equation}
-\end{lemma}
-
-\begin{proposition}
-  $\alpha$と$\beta$は線型独立とする．$\Phi$がcrystallographicなとき，$m(\alpha, \beta) = 2, 3, 4, 6$である．
-\end{proposition}
-\begin{proof}
-  補題~\ref{lem:inner_order}より，
-  \begin{equation}
-    c(\beta, \alpha)
-    = 2\frac{\inner{\beta}{\alpha}}{\inner{\alpha}{\alpha}}
-    = 2\frac{-\norm{\alpha} \norm{\beta} \cos\frac{\pi}{m(\alpha, \beta)}}{\norm{\alpha}^2}
-    = -2\frac{\norm{\beta}}{\norm{\alpha}} \cos\frac{\pi}{m(\alpha, \beta)}
-  \end{equation}
-  であるから，
-  \begin{equation}
-    c(\alpha, \beta) c(\beta, \alpha)
-    = \left( -2\frac{\norm{\alpha}}{\norm{\beta}} \cos\frac{\pi}{m(\beta, \alpha)} \right) \left( -2\frac{\norm{\beta}}{\norm{\alpha}} \cos\frac{\pi}{m(\alpha, \beta)} \right)
-    = 4\cos^2 \frac{\pi}{m(\alpha, \beta)}
-  \end{equation}
-  である．
-  $\Phi$はcrystallographic，すなわち$c(\alpha, \beta), c(\beta, \alpha) \in \Z$であるから，$c(\alpha, \beta) c(\beta, \alpha) = 0, 1, 2, 3, 4$である．
-
-  $c(\alpha, \beta) c(\beta, \alpha) = 4$のとき，$m(\alpha, \beta) = 1$となるが，これは$\alpha$と$\beta$の線型独立性に矛盾する．
-
-  $c(\alpha, \beta) c(\beta, \alpha) = 0, 1, 2, 3$のとき，それぞれ次のようになる：
-  \begin{table}[htbp]
-    \centering
-    \caption{$c(\alpha, \beta) c(\beta, \alpha)$と$m(\alpha, \beta)$の関係}
-    \label{fig:c_m_relation}
-    \begin{tabular}{cccc}
-      $c(\alpha, \beta) c(\beta, \alpha)$ & $\cos^2 \frac{\pi}{m(\alpha, \beta)}$ & $\cos\frac{\pi}{m(\alpha, \beta)}$ & $m(\alpha, \beta)$\\ \hline
-      $0$ & $0$ & $0$ & $2$ \\
-      $1$ & $1/4$ & $1/2$ & $3$\\
-      $2$ & $1/2$ & $1/\sqrt2$ & $4$\\
-      $3$ & $3/4$ & $\sqrt{3}/2$ & $6$
-    \end{tabular}
-  \end{table}
-\end{proof}
-
+この節では$P$をroot pairingとし，$B$をそれに付随するbilinear mapとする．
+また，添え字集合$\iota$は有限であるとする．
 \begin{definition}
-  $\Delta = \{\alpha_1, \ldots, \alpha_r\}$とする．
-  このとき，$r$次正方行列$C := (c(\alpha_i, \alpha_j))$を$\Phi$の\textbf{Cartan matrix}という．
-  また，$r$次正方行列$M := (m(\alpha_i, \alpha_j))$を$\Phi$の\textbf{Coxeter matrix}という．
+  \label{defi:RootPairing.coxeterWeightIn}
+  \lean{RootPairing.coxeterWeightIn}
+  \leanok
+  $B(\alpha_i, \alpha_j) B(\alpha_j, \alpha_i)$を\textbf{Coxeter weight}という．
 \end{definition}
 
-Coxeter matrixの定義から分かるように，Coxeter matrixとCoxeter-Dynkin diagramは一対一に対応する．
+\begin{lemma}
+  \label{lem:RootPairing.coxeterWeightIn_mem_set_of_isCrystallographic}
+  \lean{RootPairing.coxeterWeightIn_mem_set_of_isCrystallographic}
+  \leanok
+  $P$はcrystallographicであるとする．
+  このとき，Coxeter weightの取りうる値は$0, 1, 2, 3, 4$のいずれかである．
+\end{lemma}
+
+\begin{definition}
+  \label{defi:RootPairing.Base.cartanMatrixIn}
+  \lean{RootPairing.Base.cartanMatrixIn}
+  \leanok
+  $|\iota|$次正方行列$C := (B(\alpha_i, \alpha_j))$を$P$の\textbf{Cartan matrix}という．
+\end{definition}
 
 \begin{example}
   後述の図~\ref{fig:coxeter_diag_classification}において，$E_8$のCertan matrix, Coxeter matrixはそれぞれ次のようになる：
